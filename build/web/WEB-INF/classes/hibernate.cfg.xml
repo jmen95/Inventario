@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/inventario?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">010915</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <mapping resource="Pojo/Producto.hbm.xml"/>
+    <mapping resource="Pojo/Tipodescarga.hbm.xml"/>
+    <mapping resource="Pojo/Grupo.hbm.xml"/>
+    <mapping resource="Pojo/Auditoria.hbm.xml"/>
+    <mapping resource="Pojo/Role.hbm.xml"/>
+    <mapping resource="Pojo/Users.hbm.xml"/>
+    <mapping resource="Pojo/Roleusr.hbm.xml"/>
+    <mapping resource="Pojo/Movimientos.hbm.xml"/>
+    <mapping resource="Pojo/Paginas.hbm.xml"/>
+    <mapping resource="Pojo/Marca.hbm.xml"/>
+    <mapping resource="Pojo/Permisos.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

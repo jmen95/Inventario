@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_general_ci">inventario</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="auditoria" view="colnames">
+<left>93</left>
+<top>356</top>
+<width>128</width>
+<height>142</height>
+<sql_create_table>CREATE TABLE `auditoria` (
+  `Codigo` int(11) NOT NULL AUTO_INCREMENT,
+  `Fecha` date DEFAULT NULL,
+  `Hora` time DEFAULT NULL,
+  `Accion` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `Usuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Codigo`),
+  KEY `Usuario` (`Usuario`),
+  CONSTRAINT `auditoria_ibfk_1` FOREIGN KEY (`Usuario`) REFERENCES `users` (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+<table name="grupo" view="colnames">
+<left>838</left>
+<top>377</top>
+<width>133</width>
+<height>118</height>
+<sql_create_table>CREATE TABLE `grupo` (
+  `gruCodigo` int(11) NOT NULL AUTO_INCREMENT,
+  `gruNombre` varchar(50) NOT NULL,
+  `gruDescripcion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`gruCodigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="marca" view="colnames">
+<left>829</left>
+<top>227</top>
+<width>114</width>
+<height>107</height>
+<sql_create_table>CREATE TABLE `marca` (
+  `marCodigo` int(11) NOT NULL AUTO_INCREMENT,
+  `marNombre` varchar(100) NOT NULL,
+  `marDescripcion` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`marCodigo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="producto" view="colnames">
+<left>634</left>
+<top>70</top>
+<width>141</width>
+<height>326</height>
+<sql_create_table>CREATE TABLE `producto` (
+  `proCodigoBarra` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
+  `proNombre` varchar(100) CHARACTER SET latin1 DEFAULT NULL,
+  `proMarCodigo` int(11) DEFAULT NULL,
+  `proValorCompra` int(30) DEFAULT NULL,
+  `proStockMaximo` int(100) DEFAULT NULL,
+  `proStockMinimo` int(99) DEFAULT NULL,
+  `proStockBodega` int(100) DEFAULT NULL,
+  `proGruCodigo` int(11) DEFAULT NULL,
+  `proEstado` varchar(2) CHARACTER SET latin1 NOT NULL DEFAULT 'AC' COMMENT 'AC=Activo, IN=Inactivo',
+  `proFechaIngreso` datetime NOT NULL,
+  `proUbicacion` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `proImagen` varchar(500) CHARACTER SET latin1 DEFAULT NULL,
+  `proFechaVencimiento` date DEFAULT NULL,
+  `proTipoDescarga` int(11) DEFAULT NULL,
+  `proReferencia` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `proLote` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`proCodigoBarra`),
+  KEY `proMarCodigo` (`proMarCodigo`),
+  KEY `proGruCodigo` (`proGruCodigo`),
+  KEY `proTipoDescarga` (`proTipoDescarga`),
+  CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`proMarCodigo`) REFERENCES `marca` (`marCodigo`),
+  CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`proGruCodigo`) REFERENCES `grupo` (`gruCodigo`),
+  CONSTRAINT `producto_ibfk_3` FOREIGN KEY (`proTipoDescarga`) REFERENCES `tipodescarga` (`tideCodigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+<table name="paginas" view="colnames">
+<left>310</left>
+<top>18</top>
+<width>105</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `paginas` (
+  `pagid` int(11) NOT NULL AUTO_INCREMENT,
+  `pagname` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
+  `pagurl` varchar(20) COLLATE utf8_spanish2_ci NOT NULL,
+  `pagicono` varchar(500) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `pagestado` varchar(1) COLLATE utf8_spanish2_ci DEFAULT 'A',
+  PRIMARY KEY (`pagid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+<table name="permisos" view="colnames">
+<left>151</left>
+<top>9</top>
+<width>93</width>
+<height>141</height>
+<sql_create_table>CREATE TABLE `permisos` (
+  `perid` int(11) NOT NULL AUTO_INCREMENT,
+  `perpag` int(11) NOT NULL,
+  `peridrol` int(11) NOT NULL,
+  `peredita` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'S',
+  PRIMARY KEY (`perid`),
+  UNIQUE KEY `peridrol` (`peridrol`,`perpag`),
+  KEY `perpag` (`perpag`),
+  CONSTRAINT `permisos_ibfk_1` FOREIGN KEY (`peridrol`) REFERENCES `role` (`rolid`),
+  CONSTRAINT `permisos_ibfk_2` FOREIGN KEY (`perpag`) REFERENCES `paginas` (`pagid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+<table name="role" view="colnames">
+<left>-5</left>
+<top>107</top>
+<width>99</width>
+<height>141</height>
+<sql_create_table>CREATE TABLE `role` (
+  `rolid` int(11) NOT NULL AUTO_INCREMENT,
+  `rolname` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `roldesc` varchar(200) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `rolestado` varchar(2) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'AC',
+  PRIMARY KEY (`rolid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+<table name="movimientos" view="colnames">
+<left>461</left>
+<top>16</top>
+<width>144</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `movimientos` (
+  `movCodigo` int(11) NOT NULL,
+  `movCodUser` int(11) DEFAULT NULL,
+  `movCodProducto` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `movAccion` varchar(20) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `movCantidad` varchar(20) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  PRIMARY KEY (`movCodigo`),
+  KEY `movCodProducto` (`movCodProducto`),
+  KEY `movCodUser` (`movCodUser`),
+  CONSTRAINT `movimientos_ibfk_1` FOREIGN KEY (`movCodProducto`) REFERENCES `producto` (`proCodigoBarra`),
+  CONSTRAINT `movimientos_ibfk_2` FOREIGN KEY (`movCodUser`) REFERENCES `users` (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+<table name="roleusr" view="colnames">
+<left>149</left>
+<top>204</top>
+<width>93</width>
+<height>124</height>
+<sql_create_table>CREATE TABLE `roleusr` (
+  `ruid` int(11) NOT NULL AUTO_INCREMENT,
+  `ruuserid` int(11) NOT NULL,
+  `ruroleid` int(11) NOT NULL,
+  PRIMARY KEY (`ruid`),
+  UNIQUE KEY `ruuserid` (`ruuserid`,`ruroleid`),
+  KEY `ruroleid` (`ruroleid`),
+  CONSTRAINT `roleusr_ibfk_1` FOREIGN KEY (`ruuserid`) REFERENCES `users` (`userid`),
+  CONSTRAINT `roleusr_ibfk_2` FOREIGN KEY (`ruroleid`) REFERENCES `role` (`rolid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+<table name="tipodescarga" view="colnames">
+<left>468</left>
+<top>362</top>
+<width>133</width>
+<height>124</height>
+<sql_create_table>CREATE TABLE `tipodescarga` (
+  `tideCodigo` int(11) NOT NULL,
+  `tideNombre` varchar(100) NOT NULL,
+  `tideDescripcion` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`tideCodigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="users" view="colnames">
+<left>304</left>
+<top>279</top>
+<width>109</width>
+<height>226</height>
+<sql_create_table>CREATE TABLE `users` (
+  `username` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
+  `userpass` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `userdoc` varchar(20) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `userusu` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
+  `usertele` varchar(50) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `userdir` varchar(150) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `usercorreo` varchar(100) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `userestado` varchar(2) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'AC',
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `username` (`username`,`userid`),
+  UNIQUE KEY `userusu` (`userusu`),
+  UNIQUE KEY `userdoc` (`userdoc`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

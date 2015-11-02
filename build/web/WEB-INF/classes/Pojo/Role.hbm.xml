@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Role" table="role" catalog="inventario" optimistic-lock="version">
+        <id name="rolid" type="java.lang.Integer">
+            <column name="rolid" />
+            <generator class="identity" />
+        </id>
+        <property name="rolname" type="string">
+            <column name="rolname" length="100" />
+        </property>
+        <property name="roldesc" type="string">
+            <column name="roldesc" length="200" />
+        </property>
+        <property name="rolestado" type="string">
+            <column name="rolestado" length="2" not-null="true" />
+        </property>
+        <set name="roleusrs" table="roleusr" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ruroleid" not-null="true" />
+            </key>
+            <one-to-many class="Pojo.Roleusr" />
+        </set>
+        <set name="permisoses" table="permisos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="peridrol" not-null="true" />
+            </key>
+            <one-to-many class="Pojo.Permisos" />
+        </set>
+    </class>
+</hibernate-mapping>

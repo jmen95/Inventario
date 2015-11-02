@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Paginas" table="paginas" catalog="inventario" optimistic-lock="version">
+        <id name="pagid" type="java.lang.Integer">
+            <column name="pagid" />
+            <generator class="identity" />
+        </id>
+        <property name="pagname" type="string">
+            <column name="pagname" length="20" not-null="true" />
+        </property>
+        <property name="pagurl" type="string">
+            <column name="pagurl" length="20" not-null="true" />
+        </property>
+        <property name="pagicono" type="string">
+            <column name="pagicono" length="500" />
+        </property>
+        <property name="pagestado" type="string">
+            <column name="pagestado" length="1" />
+        </property>
+        <set name="permisoses" table="permisos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="perpag" not-null="true" />
+            </key>
+            <one-to-many class="Pojo.Permisos" />
+        </set>
+    </class>
+</hibernate-mapping>

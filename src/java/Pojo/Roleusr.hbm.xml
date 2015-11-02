@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Roleusr" table="roleusr" catalog="inventario" optimistic-lock="version">
+        <id name="ruid" type="java.lang.Integer">
+            <column name="ruid" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="role" class="Pojo.Role" fetch="select">
+            <column name="ruroleid" not-null="true" />
+        </many-to-one>
+        <many-to-one name="users" class="Pojo.Users" fetch="select">
+            <column name="ruuserid" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

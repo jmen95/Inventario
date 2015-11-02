@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Permisos" table="permisos" catalog="inventario" optimistic-lock="version">
+        <id name="perid" type="java.lang.Integer">
+            <column name="perid" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="paginas" class="Pojo.Paginas" fetch="select">
+            <column name="perpag" not-null="true" />
+        </many-to-one>
+        <many-to-one name="role" class="Pojo.Role" fetch="select">
+            <column name="peridrol" not-null="true" />
+        </many-to-one>
+        <property name="peredita" type="string">
+            <column name="peredita" length="1" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Users" table="users" catalog="inventario" optimistic-lock="version">
+        <id name="userid" type="java.lang.Integer">
+            <column name="userid" />
+            <generator class="identity" />
+        </id>
+        <property name="username" type="string">
+            <column name="username" length="100" not-null="true" />
+        </property>
+        <property name="userpass" type="string">
+            <column name="userpass" length="50" not-null="true" />
+        </property>
+        <property name="userdoc" type="string">
+            <column name="userdoc" length="20" unique="true" />
+        </property>
+        <property name="userusu" type="string">
+            <column name="userusu" length="50" not-null="true" unique="true" />
+        </property>
+        <property name="usertele" type="string">
+            <column name="usertele" length="50" />
+        </property>
+        <property name="userdir" type="string">
+            <column name="userdir" length="150" />
+        </property>
+        <property name="usercorreo" type="string">
+            <column name="usercorreo" length="100" />
+        </property>
+        <property name="userestado" type="string">
+            <column name="userestado" length="2" not-null="true" />
+        </property>
+        <set name="movimientoses" table="movimientos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="movCodUser" />
+            </key>
+            <one-to-many class="Pojo.Movimientos" />
+        </set>
+        <set name="auditorias" table="auditoria" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Usuario" />
+            </key>
+            <one-to-many class="Pojo.Auditoria" />
+        </set>
+        <set name="roleusrs" table="roleusr" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ruuserid" not-null="true" />
+            </key>
+            <one-to-many class="Pojo.Roleusr" />
+        </set>
+    </class>
+</hibernate-mapping>

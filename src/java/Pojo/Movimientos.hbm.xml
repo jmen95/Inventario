@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Movimientos" table="movimientos" catalog="inventario" optimistic-lock="version">
+        <id name="movCodigo" type="int">
+            <column name="movCodigo" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="producto" class="Pojo.Producto" fetch="select">
+            <column name="movCodProducto" length="100" />
+        </many-to-one>
+        <many-to-one name="users" class="Pojo.Users" fetch="select">
+            <column name="movCodUser" />
+        </many-to-one>
+        <property name="movAccion" type="string">
+            <column name="movAccion" length="20" />
+        </property>
+        <property name="movCantidad" type="string">
+            <column name="movCantidad" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

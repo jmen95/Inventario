@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Grupo" table="grupo" catalog="inventario" optimistic-lock="version">
+        <id name="gruCodigo" type="java.lang.Integer">
+            <column name="gruCodigo" />
+            <generator class="identity" />
+        </id>
+        <property name="gruNombre" type="string">
+            <column name="gruNombre" length="50" not-null="true" />
+        </property>
+        <property name="gruDescripcion" type="string">
+            <column name="gruDescripcion" length="100" />
+        </property>
+        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="proGruCodigo" />
+            </key>
+            <one-to-many class="Pojo.Producto" />
+        </set>
+    </class>
+</hibernate-mapping>

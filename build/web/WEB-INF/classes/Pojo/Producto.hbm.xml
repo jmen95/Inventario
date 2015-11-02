@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Pojo.Producto" table="producto" catalog="inventario" optimistic-lock="version">
+        <id name="proCodigoBarra" type="string">
+            <column name="proCodigoBarra" length="100" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="grupo" class="Pojo.Grupo" fetch="select">
+            <column name="proGruCodigo" />
+        </many-to-one>
+        <many-to-one name="marca" class="Pojo.Marca" fetch="select">
+            <column name="proMarCodigo" />
+        </many-to-one>
+        <many-to-one name="tipodescarga" class="Pojo.Tipodescarga" fetch="select">
+            <column name="proTipoDescarga" />
+        </many-to-one>
+        <property name="proNombre" type="string">
+            <column name="proNombre" length="100" />
+        </property>
+        <property name="proValorCompra" type="java.lang.Integer">
+            <column name="proValorCompra" />
+        </property>
+        <property name="proStockMaximo" type="java.lang.Integer">
+            <column name="proStockMaximo" />
+        </property>
+        <property name="proStockMinimo" type="java.lang.Integer">
+            <column name="proStockMinimo" />
+        </property>
+        <property name="proStockBodega" type="java.lang.Integer">
+            <column name="proStockBodega" />
+        </property>
+        <property name="proEstado" type="string">
+            <column name="proEstado" length="2" not-null="true">
+                <comment>AC=Activo, IN=Inactivo</comment>
+            </column>
+        </property>
+        <property name="proFechaIngreso" type="timestamp">
+            <column name="proFechaIngreso" length="19" not-null="true" />
+        </property>
+        <property name="proUbicacion" type="string">
+            <column name="proUbicacion" length="50" />
+        </property>
+        <property name="proImagen" type="string">
+            <column name="proImagen" length="500" />
+        </property>
+        <property name="proFechaVencimiento" type="date">
+            <column name="proFechaVencimiento" length="10" />
+        </property>
+        <property name="proReferencia" type="string">
+            <column name="proReferencia" length="50" />
+        </property>
+        <property name="proLote" type="string">
+            <column name="proLote" length="50" />
+        </property>
+        <set name="movimientoses" table="movimientos" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="movCodProducto" length="100" />
+            </key>
+            <one-to-many class="Pojo.Movimientos" />
+        </set>
+    </class>
+</hibernate-mapping>

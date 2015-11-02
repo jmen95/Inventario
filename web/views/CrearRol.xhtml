@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>::Inventario::</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../plantilla.xhtml">
+            <ui:define name="title">::Crear Usuario::</ui:define>
+            <ui:define name="usuario">Jesus Mendoza</ui:define>
+            <ui:define name="content">
+                <br></br>
+                <h:form id="form" style="margin-left: 4px; margin-right: 4px;">      
+                    <p:growl id="mensaje" showDetail="true" sticky="true" /> 
+                    <div class="crearrol mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Crear Rol</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            <h:panelGrid columns="2" cellspacing="7" cellpadding="7" style="margin-top: -16px;">
+                                <h:panelGroup>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                        <h:outputLabel for="txtRole" value="Nombre del rol"  styleClass="mdl-textfield__label"/>   
+                                        <h:inputText id="txtRole"  required="true" styleClass="mdl-textfield__input" value="#{mbVPqrRoles.rolename}"/>
+                                    </div>
+                                </h:panelGroup>
+                                <h:panelGroup>
+                                    <p:selectBooleanCheckbox styleClass="mdl-checkbox__input" value="#{mbVPqrRoles.state}"/>
+                                    <p:spacer width="10px;"></p:spacer>
+                                    <h:outputText value="Activo"/>
+                                </h:panelGroup>
+                            </h:panelGrid>
+
+
+                        </div>
+                        <div class="mdl-card__actions mdl-card--border">
+                            <p:commandButton value="GUARDAR" update=":form" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="margin-left: 16px;" actionListener="#{mbVPqrRoles.register()}"/>                        
+                        </div>
+                    </div>
+                    <br></br>
+                    <p:dataTable var="rol" value="#{mbVPqrRoles.listPqrRoles}" sortMode="multiple" editable="true" styleClass="tabla">
+                        <p:ajax event="rowEdit" listener="#{mbVPqrRoles.update}" update=":form:mensaje" />
+                        <p:column headerText="Código" sortBy="#{rol.rolid}">
+                            <h:outputText value="#{rol.rolid}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{rol.rolname}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{rol.rolname}" style="width:100%" label="Descripción"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Estado">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{rol.state=='AC'?'ACTIVO':'INACTIVO'}" /></f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu value="#{rol.state}" style="width:100%">
+                                        <f:selectItem itemLabel="ACTIVO" itemValue="AC" />
+                                        <f:selectItem itemLabel="INACTIVO" itemValue="IN" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width:32px">
+                            <p:rowEditor />
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
+                <br></br><br></br>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
