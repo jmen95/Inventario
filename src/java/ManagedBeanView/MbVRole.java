@@ -5,11 +5,20 @@
  */
 package ManagedBeanView;
 
+import Dao.DaoRole;
+import HibernateUtil.HibernateUtil;
 import Pojo.Role;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -25,9 +34,9 @@ public class MbVRole {
     Transaction transaction;
     Session session;
     Role role;
-    boolean estado;
+    private boolean estado;
+    private List<Role> listRole;
     public MbVRole() {
-        role=new Role();
         limpiar();
     }
     public String register() {
@@ -41,14 +50,14 @@ public class MbVRole {
 
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            DaoPqrRoles daoPqrRoles = new DaoPqrRoles();
-            daoPqrRoles.register(session, pqrRoles);
+            DaoRole daoRole = new DaoRole();
+            daoRole.register(session, role);
             transaction.commit();
             limpiar();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Guardado", "Guardado con exito.");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         } catch (Exception ex) {
-            Logger.getLogger(MbVPqrRoles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MbVRole.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -60,18 +69,19 @@ public class MbVRole {
 
     public void update(RowEditEvent event) {
         try {
-            this.pqrRoles.setRolid(((PqrRoles) event.getObject()).getRolid());
-            this.pqrRoles.setRolname(((PqrRoles) event.getObject()).getRolname());
-            this.pqrRoles.setState(((PqrRoles) event.getObject()).getState());
+            this.role.setRolid(((Role) event.getObject()).getRolid());
+            this.role.setRolname(((Role) event.getObject()).getRolname());
+            this.role.setRolestado(((Role) event.getObject()).getRolestado());
+            this.role.setRoldesc(((Role) event.getObject()).getRoldesc());
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            DaoPqrRoles daoPqrRoles = new DaoPqrRoles();
-            daoPqrRoles.update(session, pqrRoles);
+            DaoRole daoRole = new DaoRole();
+            daoRole.update(session, role);
             transaction.commit();
             FacesMessage msg = new FacesMessage("Actualizado", "Actualizado con exito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception ex) {
-            Logger.getLogger(MbVPqrRoles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MbVRole.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -79,15 +89,14 @@ public class MbVRole {
         }
     }
 
-    public final void limpiar() {
-        this.state = true;
-        this.rolename = null;
-        DaoPqrRoles daoPqrRoles = new DaoPqrRoles();
+    public final void limpiar(){
+        role = new Role();
+        DaoRole daoRole = new DaoRole();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            listPqrRoles = daoPqrRoles.getAll(session);
+            listRole = daoRole.getAll(session);
         } catch (Exception ex) {
-            Logger.getLogger(MbVPqrRoles.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MbVRole.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -109,6 +118,14 @@ public class MbVRole {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public List<Role> getListRole() {
+        return listRole;
+    }
+
+    public void setListRole(List<Role> listRole) {
+        this.listRole = listRole;
     }
     
 }

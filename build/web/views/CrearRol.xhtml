@@ -21,45 +21,58 @@
                             <h2 class="mdl-card__title-text">Crear Rol</h2>
                         </div>
                         <div class="mdl-card__supporting-text">
-                            <h:panelGrid columns="2" cellspacing="7" cellpadding="7" style="margin-top: -16px;">
-                                <h:panelGroup>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--6-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                         <h:outputLabel for="txtRole" value="Nombre del rol"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtRole"  required="true" styleClass="mdl-textfield__input" value="#{mbVPqrRoles.rolename}"/>
+                                        <h:inputText id="txtRole"  required="true" styleClass="mdl-textfield__input" value="#{mbVRole.role.rolname}"/>
                                     </div>
-                                </h:panelGroup>
-                                <h:panelGroup>
-                                    <p:selectBooleanCheckbox styleClass="mdl-checkbox__input" value="#{mbVPqrRoles.state}"/>
+                                </div>
+                                
+                                <div class="mdl-cell mdl-cell--4-col">
+                                    <p:selectBooleanCheckbox styleClass="mdl-checkbox__input" value="#{mbVRole.estado}"/>
                                     <p:spacer width="10px;"></p:spacer>
                                     <h:outputText value="Activo"/>
-                                </h:panelGroup>
-                            </h:panelGrid>
+                                </div>
+                                <div class="mdl-cell mdl-cell--6-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_rol">
+                                        <h:outputLabel for="txtRole" value="Descripción"  styleClass="mdl-textfield__label"/>   
+                                        <h:inputTextarea id="txtRole"  required="true" styleClass="mdl-textfield__input" value="#{mbVRole.role.roldesc}" rows="3"/>
+                                    </div>
+                                </div>
+                            </div>
 
 
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <p:commandButton value="GUARDAR" update=":form" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" style="margin-left: 16px;" actionListener="#{mbVPqrRoles.register()}"/>                        
+                            <p:commandButton value="GUARDAR" update=":form" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVRole.register()}"/>                        
                         </div>
                     </div>
                     <br></br>
-                    <p:dataTable var="rol" value="#{mbVPqrRoles.listPqrRoles}" sortMode="multiple" editable="true" styleClass="tabla">
-                        <p:ajax event="rowEdit" listener="#{mbVPqrRoles.update}" update=":form:mensaje" />
+                    <p:dataTable var="rol" value="#{mbVRole.listRole}" sortMode="multiple" editable="true" styleClass="tabla">
+                        <p:ajax event="rowEdit" listener="#{mbVRole.update}" update=":form:mensaje" />
                         <p:column headerText="Código" sortBy="#{rol.rolid}">
                             <h:outputText value="#{rol.rolid}" />
                         </p:column>
 
-                        <p:column headerText="Descripción">
+                        <p:column headerText="Nombre">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{rol.rolname}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{rol.rolname}" style="width:100%" label="Descripción"/></f:facet>
                             </p:cellEditor>
                         </p:column>
+                        <p:column headerText="Descripción">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{rol.roldesc}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{rol.roldesc}" style="width:100%" label="Descripción"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
 
                         <p:column headerText="Estado">
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{rol.state=='AC'?'ACTIVO':'INACTIVO'}" /></f:facet>
+                                <f:facet name="output"><h:outputText value="#{rol.rolestado=='AC'?'ACTIVO':'INACTIVO'}" /></f:facet>
                                 <f:facet name="input">
-                                    <h:selectOneMenu value="#{rol.state}" style="width:100%">
+                                    <h:selectOneMenu value="#{rol.rolestado}" style="width:100%">
                                         <f:selectItem itemLabel="ACTIVO" itemValue="AC" />
                                         <f:selectItem itemLabel="INACTIVO" itemValue="IN" />
                                     </h:selectOneMenu>
