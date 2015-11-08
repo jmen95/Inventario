@@ -53,8 +53,8 @@
                                     </div>
                                 </div>
                                 <div class="mdl-cell mdl-cell--3-col">
-                                    <p:outputLabel for="rol" value="Rol:"  /><br></br>
-                                    <p:selectOneMenu id="rol" value="#{mbVUsers.roleid}" panelStyle="width:180px" rendered="true"
+                                    <p:outputLabel for="rolid" value="Rol:"  /><br></br>
+                                    <p:selectOneMenu id="rolid" value="#{mbVUsers.roleid}" panelStyle="width:180px" rendered="true"
                                                      effect="fade" style="width:160px" filter="true" filterMatchMode="startsWith" styleClass="select1">
                                         <f:selectItem itemLabel="Seleccione" itemValue="" />
                                         <f:selectItems value="#{mbVUsers.listaRoles}" var="rol" itemLabel="#{rol.rolname}" itemValue="#{rol.rolid}" />
@@ -89,46 +89,111 @@
 
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <p:commandButton value="GUARDAR" ajax="false" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVRole.register()}"/>                        
+                            <p:commandButton value="GUARDAR" ajax="false" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVUsers.register()}"/>                        
                         </div>
                     </div>
                     <br></br>
-                    <p:dataTable var="rol" value="#{mbVRole.listRole}" sortMode="multiple" editable="true" styleClass="tabla">
-                        <p:ajax event="rowEdit" listener="#{mbVRole.update}" update=":form:mensaje" />
-                        <p:column headerText="Código" sortBy="#{rol.rolid}">
-                            <h:outputText value="#{rol.rolid}" />
+                    <p:dataTable var="user" value="#{mbVUsers.listaUsers}" sortMode="multiple" editable="true" styleClass="tabla">
+                        <p:ajax event="rowEdit" listener="#{mbVUsers.update}" update=":form:mensaje" />
+                        <p:column headerText="Código" sortBy="#{user.userid}">
+                            <h:outputText value="#{user.userid}" />
                         </p:column>
 
                         <p:column headerText="Nombre">
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{rol.rolname}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{rol.rolname}" style="width:100%" label="Descripción"/></f:facet>
+                                <f:facet name="output"><h:outputText value="#{user.username}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.username}" style="width:100%" label="Nombre"/></f:facet>
                             </p:cellEditor>
                         </p:column>
-                        <p:column headerText="Descripción">
+                        <p:column headerText="Usuario">
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{rol.roldesc}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{rol.roldesc}" style="width:100%" label="Descripción"/></f:facet>
+                                <f:facet name="output"><h:outputText value="#{user.userusu}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.userusu}" style="width:100%" label="Usuario"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Contraseña">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{user.userpass}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.userpass}" style="width:100%" label="Contraseña"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="# Documento">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{user.userdoc}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.userdoc}" style="width:100%" label="# Documento"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Dirección">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{user.userdir}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.userdir}" style="width:100%" label="Dirección"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Teléfono">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{user.usertele}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{user.usertele}" style="width:100%" label="Teléfono"/></f:facet>
                             </p:cellEditor>
                         </p:column>
 
                         <p:column headerText="Estado">
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{rol.rolestado=='AC'?'ACTIVO':'INACTIVO'}" /></f:facet>
+                                <f:facet name="output"><h:outputText value="#{user.userestado=='AC'?'ACTIVO':'INACTIVO'}" /></f:facet>
                                 <f:facet name="input">
-                                    <h:selectOneMenu value="#{rol.rolestado}" style="width:100%">
+                                    <h:selectOneMenu value="#{user.userestado}" style="width:100%">
                                         <f:selectItem itemLabel="ACTIVO" itemValue="AC" />
                                         <f:selectItem itemLabel="INACTIVO" itemValue="IN" />
                                     </h:selectOneMenu>
                                 </f:facet>
                             </p:cellEditor>
                         </p:column>
-
+                        <p:column style="width:32px;text-align: center;">
+                            <p:commandButton style="height: 18px;width:34px;" update=":form:menuDetail" oncomplete="PF('menuDialog').show()" icon="ui-icon-search" title="Editar">
+                                <f:setPropertyActionListener value="#{mbVUsers.getRoles(user.userid)}" target="#{mbVUsers.listaroleusr}" />
+                            </p:commandButton>
+                        </p:column>
                         <p:column style="width:32px">
                             <p:rowEditor />
                         </p:column>
                     </p:dataTable>
+                    <p:dialog header="Menú de opciones" widgetVar="menuDialog" showEffect="explode" hideEffect="explode" width="800">
+                        <p:outputPanel id="menuDetail" style="text-align:center;">
+                            
+                            <div class="mdl-grid">
 
+                                <div class="mdl-cell mdl-cell--2-col">
+                                    <p:outputLabel for="rolid2" value="Rol:"  />
+                                </div>
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <p:selectOneMenu id="rolid2" value="#{mbVUsers.roleid2}" panelStyle="width:180px" rendered="true"
+                                                     effect="fade" style="width:160px" filter="true" filterMatchMode="startsWith" styleClass="select1">
+                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                        <f:selectItems value="#{mbVUsers.listaRoles}" var="rol1" itemLabel="#{rol1.rolname}" itemValue="#{rol1.rolid}" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <p:commandButton value="GUARDAR" update=":form:menuDetail" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVUsers.regRole()}"/>                        
+                                </div>
+                            </div>
+                            <p:dataTable var="r" value="#{mbVUsers.listaroleusr}">
+                                <p:column headerText="Id" width="50">
+                                    <h:outputText value="#{r.ruid}" />
+                                </p:column>
+
+                                <p:column headerText="Codigo Rol">
+                                    <h:outputText value="#{r.role.rolname}" />
+                                </p:column>
+
+                                <p:column headerText="Rol">
+                                    <h:outputText value="#{r.role.rolname}" />
+                                </p:column>
+
+                                <p:column headerText="Eliminar">
+                                    <p:commandButton update=":form:menuDetail" icon="iu-icon-close"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </p:dialog>
                 </h:form>
                 <br></br><br></br>
             </ui:define>

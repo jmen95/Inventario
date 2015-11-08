@@ -22,22 +22,24 @@ import org.hibernate.criterion.Restrictions;
 public class DaoUsers implements InterfaceUsers {
 
     @Override
-    public boolean register(Session session, Users users,Roleusr roleusr) throws Exception {
-        session.save(users);
+    public boolean register(Session session, Users users, Roleusr roleusr) throws Exception {
+        if (users !=null) {
+            session.save(users);
+        }
         session.save(roleusr);
         return true;
     }
 
     @Override
     public List<Users> getActives(Session session) throws Exception {
-        Criteria criteria=session.createCriteria(Users.class);
+        Criteria criteria = session.createCriteria(Users.class);
         criteria.add(Restrictions.eq("userestado", "AC"));
         return criteria.list();
     }
 
     @Override
     public List<Users> getAll(Session session) throws Exception {
-        Criteria criteria=session.createCriteria(Users.class);
+        Criteria criteria = session.createCriteria(Users.class);
         criteria.addOrder(Order.asc("userid"));
         return criteria.list();
     }
@@ -50,13 +52,38 @@ public class DaoUsers implements InterfaceUsers {
 
     @Override
     public Users getByUsuario(Session session, String usuario) throws Exception {
-        String hql="from Tusuario where correoElectronico=:usuario";
-        Query query=session.createQuery(hql);
+        String hql = "from Users where userusu=:usuario";
+        Query query = session.createQuery(hql);
         query.setParameter("usuario", usuario);
-        
-        Users users=(Users) query.uniqueResult();
-        
+
+        Users users = (Users) query.uniqueResult();
+
         return users;
+    }
+
+    @Override
+    public List<Roleusr> getRoles(Session session, int codigo) throws Exception {
+        Criteria criteria = session.createCriteria(Roleusr.class)
+                .add(Restrictions.eq("Users.userid", codigo))
+                .createCriteria("Role", "r")
+                .setResultTransformer(Criteria.ROOT_ENTITY);
+        return criteria.list();
+    }
+
+    @Override
+    public Roleusr getByRoleusr(Session session, int user, int role) throws Exception {
+        Criteria criteria=session.createCriteria(Roleusr.class)
+                .add(Restrictions.eq("Users.userid", user))
+                .add(Restrictions.eq("Role.rolid", role));
+        return (Roleusr) criteria.uniqueResult();
+    }
+
+    @Override
+    public Users getByCode(Session session, Integer codigo) throws Exception {
+        String hql="from Users where userid=:codigo";
+        Query query=session.createQuery(hql);
+        query.setParameter("codigo", codigo);        
+        return (Users) query.uniqueResult();
     }
 
 }

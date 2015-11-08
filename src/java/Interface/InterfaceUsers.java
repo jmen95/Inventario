@@ -20,8 +20,14 @@ public interface InterfaceUsers {
     public List<Users> getActives(Session session) throws Exception;
 
     public List<Users> getAll(Session session) throws Exception;
+    
+    public List<Roleusr> getRoles(Session session,int codigo) throws Exception;
 
     public boolean update(Session session, Users users) throws Exception;
     
     public Users getByUsuario(Session session, String usuario) throws Exception;
+    
+    public Roleusr getByRoleusr(Session session, int user,int role) throws Exception;
+    
+    public Users getByCode(Session session,Integer codigo) throws Exception;
 }

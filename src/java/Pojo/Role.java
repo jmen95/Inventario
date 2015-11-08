@@ -76,9 +76,6 @@ public class Role  implements java.io.Serializable {
         this.permisoses = permisoses;
     }
 
-
-
-
 }
 
 

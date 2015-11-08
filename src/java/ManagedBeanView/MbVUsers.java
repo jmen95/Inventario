@@ -13,6 +13,7 @@ import Pojo.Role;
 import Pojo.Roleusr;
 import Pojo.Users;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,12 +41,16 @@ public class MbVUsers implements Serializable {
     private String Contrasenia2;
     private int codRole;
     private String roleid;
+    private String roleid2;
     private Role role;
     private boolean estado;
     private Roleusr roleusr;
     private List<Role> listaRoles;
     Transaction transaction;
     Session session;
+    private List<Users> listaUsers;
+    private List<Roleusr> listaroleusr;
+    private static int codUser;
 
     public MbVUsers() {
         try {
@@ -57,6 +62,8 @@ public class MbVUsers implements Serializable {
             this.estado = true;
             DaoRole daoRole = new DaoRole();
             listaRoles = daoRole.getActives(session);
+            DaoUsers daoUsers = new DaoUsers();
+            listaUsers = daoUsers.getAll(session);
         } catch (Exception ex) {
             Logger.getLogger(MbVUsers.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,19 +73,17 @@ public class MbVUsers implements Serializable {
         this.session = null;
         this.transaction = null;
         try {
-            if(!this.users.getUserpass().equals(this.Contrasenia2))
-            {
+            if (!this.users.getUserpass().equals(this.Contrasenia2)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Las contraseñas no coenciden"));
 
                 return;
             }
-            
+
             DaoUsers daoUsers = new DaoUsers();
-            
+
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            if(daoUsers.getByUsuario(this.session, this.users.getUserusu())!=null)
-            {
+            if (daoUsers.getByUsuario(this.session, this.users.getUserusu()) != null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El usuario ya se encuentra registrado en el sistema"));
 
                 return;
@@ -100,12 +105,11 @@ public class MbVUsers implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "El registro fue realizado correctamente.");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         } catch (Exception ex) {
-            if(this.transaction!=null)
-            {
+            if (this.transaction != null) {
                 this.transaction.rollback();
             }
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador "+ex.getMessage()));
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador " + ex.getMessage()));
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -136,7 +140,11 @@ public class MbVUsers implements Serializable {
             FacesMessage msg = new FacesMessage("Actualizado", "Actualizado con exito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception ex) {
-            Logger.getLogger(MbVUsers.class.getName()).log(Level.SEVERE, null, ex);
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador " + ex.getMessage()));
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -153,6 +161,64 @@ public class MbVUsers implements Serializable {
 
     }
 
+    public List<Roleusr> getRoles(int codigo) {
+        codUser=codigo;
+        List<Roleusr> lista = new ArrayList();
+        try {
+            DaoUsers daoUsers = new DaoUsers();
+            session = HibernateUtil.getSessionFactory().openSession();
+            lista = daoUsers.getRoles(session, codigo);
+
+        } catch (Exception ex) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador " + ex.getMessage()));
+        }
+        return lista;
+    }
+    
+    public void regRole(){
+        this.session = null;
+        this.transaction = null;
+        try {
+
+            DaoUsers daoUsers = new DaoUsers();
+
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            if (daoUsers.getByRoleusr(this.session, this.codUser,Integer.parseInt(roleid2)) != null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El usuario tiene este rol asignado"));
+                return;
+            }
+            
+            codRole = Integer.parseInt(roleid2);
+            DaoRole daoRole = new DaoRole();
+            role = daoRole.getByCode(session, codRole);
+            users = daoUsers.getByCode(session, codUser);
+            roleusr.setRole(role);
+            roleusr.setUsers(users);
+            
+            daoUsers.register(session, null, roleusr);
+            transaction.commit();
+            roleid2=null;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "El registro fue realizado correctamente.");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        } catch (Exception ex) {
+            if (this.transaction != null) {
+                this.transaction.rollback();
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador " + ex.getMessage()));
+        } finally {
+            if (session.isOpen()) {
+                session.close();
+            }
+
+        }
+    }
+    
     public Users getUsers() {
         return users;
     }
@@ -209,4 +275,36 @@ public class MbVUsers implements Serializable {
         this.roleid = roleid;
     }
 
+    public List<Users> getListaUsers() {
+        return listaUsers;
+    }
+
+    public void setListaUsers(List<Users> listaUsers) {
+        this.listaUsers = listaUsers;
+    }
+
+    public List<Roleusr> getListaroleusr() {
+        return listaroleusr;
+    }
+
+    public void setListaroleusr(List<Roleusr> listaroleusr) {
+        this.listaroleusr = listaroleusr;
+    }
+
+    public int getCodUser() {
+        return codUser;
+    }
+
+    public void setCodUser(int codUser) {
+        this.codUser = codUser;
+    }
+
+    public String getRoleid2() {
+        return roleid2;
+    }
+
+    public void setRoleid2(String roleid2) {
+        this.roleid2 = roleid2;
+    }
+    
 }
