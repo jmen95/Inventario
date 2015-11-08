@@ -6,7 +6,7 @@
     <class name="Pojo.Movimientos" table="movimientos" catalog="inventario" optimistic-lock="version">
         <id name="movCodigo" type="int">
             <column name="movCodigo" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <many-to-one name="producto" class="Pojo.Producto" fetch="select">
             <column name="movCodProducto" length="100" />

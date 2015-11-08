@@ -63,7 +63,12 @@ public class MbVRole implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Guardado", "Guardado con exito.");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         } catch (Exception ex) {
-            Logger.getLogger(MbVRole.class.getName()).log(Level.SEVERE, null, ex);
+            if(this.transaction!=null)
+            {
+                this.transaction.rollback();
+            }
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador "+ex.getMessage()));
         } finally {
             if (session.isOpen()) {
                 session.close();
@@ -86,7 +91,12 @@ public class MbVRole implements Serializable {
             FacesMessage msg = new FacesMessage("Actualizado", "Actualizado con exito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception ex) {
-            Logger.getLogger(MbVRole.class.getName()).log(Level.SEVERE, null, ex);
+            if(this.transaction!=null)
+            {
+                this.transaction.rollback();
+            }
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador "+ex.getMessage()));
         } finally {
             if (session.isOpen()) {
                 session.close();
