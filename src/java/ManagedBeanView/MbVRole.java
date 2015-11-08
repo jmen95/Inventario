@@ -8,6 +8,7 @@ package ManagedBeanView;
 import Dao.DaoRole;
 import HibernateUtil.HibernateUtil;
 import Pojo.Role;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,20 +27,22 @@ import org.primefaces.event.RowEditEvent;
  */
 @ManagedBean
 @ViewScoped
-public class MbVRole {
+public class MbVRole implements Serializable{
 
     /**
      * Creates a new instance of MbVRole
      */ 
     Transaction transaction;
     Session session;
-    Role role;
+    private Role role;
     private boolean estado;
     private List<Role> listRole;
     public MbVRole() {
-        limpiar();
+        if(this.role==null){                   
+            limpiar();
+        }
     }
-    public String register() {
+    public void register() {
         try {
             if (estado) {
                 this.role.setRolestado("AC");
@@ -64,7 +67,6 @@ public class MbVRole {
             }
 
         }
-        return null;
     }
 
     public void update(RowEditEvent event) {
@@ -90,7 +92,9 @@ public class MbVRole {
     }
 
     public final void limpiar(){
-        role = new Role();
+        this.role = new Role(); 
+        this.role.setRoldesc("");
+        this.role.setRolname("");
         DaoRole daoRole = new DaoRole();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
