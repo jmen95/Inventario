@@ -23,12 +23,12 @@
                         <div class="mdl-card__supporting-text">
                             <div class="mdl-grid">
                                 <div class="mdl-cell mdl-cell--6-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
                                         <h:outputLabel for="txtRole" value="Nombre del rol"  styleClass="mdl-textfield__label"/>   
                                         <h:inputText id="txtRole"  required="true" styleClass="mdl-textfield__input" value="#{mbVRole.role.rolname}"/>
                                     </div>
                                 </div>
-                                
+
                                 <div class="mdl-cell mdl-cell--4-col">
                                     <p:selectBooleanCheckbox styleClass="mdl-checkbox__input" value="#{mbVRole.estado}"/>
                                     <p:spacer width="10px;"></p:spacer>
@@ -36,8 +36,8 @@
                                 </div>
                                 <div class="mdl-cell mdl-cell--6-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_rol">
-                                        <h:outputLabel for="txtRole" value="Descripción"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputTextarea id="txtRole"  required="true" styleClass="mdl-textfield__input" value="#{mbVRole.role.roldesc}" rows="3"/>
+                                        <h:outputLabel for="txtDescripcion" value="Descripción"  styleClass="mdl-textfield__label"/>   
+                                        <h:inputTextarea id="txtDescripcion"  required="true" styleClass="mdl-textfield__input" value="#{mbVRole.role.roldesc}" rows="3"/>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
 
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <p:commandButton value="GUARDAR" update=":form" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVRole.register()}"/>                        
+                            <p:commandButton value="GUARDAR" ajax="false" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVRole.register()}"/>                        
                         </div>
                     </div>
                     <br></br>

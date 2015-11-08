@@ -27,29 +27,32 @@ import org.primefaces.event.RowEditEvent;
  */
 @ManagedBean
 @ViewScoped
-public class MbVRole implements Serializable{
+public class MbVRole implements Serializable {
 
     /**
      * Creates a new instance of MbVRole
-     */ 
+     */
     Transaction transaction;
     Session session;
     private Role role;
+    private String rolname;
+    private String roldesc;
+    private String rolestado;
     private boolean estado;
     private List<Role> listRole;
+
     public MbVRole() {
-        if(this.role==null){                   
-            limpiar();
-        }
+        limpiar();
     }
+
     public void register() {
         try {
+//            this.role=new Role();
             if (estado) {
                 this.role.setRolestado("AC");
             } else {
                 this.role.setRolestado("IN");
             }
-            
 
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
@@ -91,10 +94,9 @@ public class MbVRole implements Serializable{
         }
     }
 
-    public final void limpiar(){
-        this.role = new Role(); 
-        this.role.setRoldesc("");
-        this.role.setRolname("");
+    public final void limpiar() {
+        this.role = new Role();
+        this.estado=true;
         DaoRole daoRole = new DaoRole();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
@@ -130,6 +132,30 @@ public class MbVRole implements Serializable{
 
     public void setListRole(List<Role> listRole) {
         this.listRole = listRole;
+    }
+
+    public String getRolname() {
+        return rolname;
+    }
+
+    public void setRolname(String rolname) {
+        this.rolname = rolname;
+    }
+
+    public String getRoldesc() {
+        return roldesc;
+    }
+
+    public void setRoldesc(String roldesc) {
+        this.roldesc = roldesc;
+    }
+
+    public String getRolestado() {
+        return rolestado;
+    }
+
+    public void setRolestado(String rolestado) {
+        this.rolestado = rolestado;
     }
     
 }
