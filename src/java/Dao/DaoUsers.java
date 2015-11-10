@@ -22,11 +22,9 @@ import org.hibernate.criterion.Restrictions;
 public class DaoUsers implements InterfaceUsers {
 
     @Override
-    public boolean register(Session session, Users users, Roleusr roleusr) throws Exception {
-        if (users !=null) {
-            session.save(users);
-        }
-        session.save(roleusr);
+    public boolean register(Session session, Users users) throws Exception {
+
+        session.save(users);
         return true;
     }
 
@@ -60,6 +58,17 @@ public class DaoUsers implements InterfaceUsers {
 
         return users;
     }
+    
+    @Override
+    public Users getByDocumento(Session session, String documento) throws Exception {
+        String hql = "from Users where userdoc=:documento";
+        Query query = session.createQuery(hql);
+        query.setParameter("documento", documento);
+
+        Users users = (Users) query.uniqueResult();
+
+        return users;
+    }
 
     @Override
     public List<Roleusr> getRoles(Session session, int codigo) throws Exception {
@@ -72,7 +81,7 @@ public class DaoUsers implements InterfaceUsers {
 
     @Override
     public Roleusr getByRoleusr(Session session, int user, int role) throws Exception {
-        Criteria criteria=session.createCriteria(Roleusr.class)
+        Criteria criteria = session.createCriteria(Roleusr.class)
                 .add(Restrictions.eq("Users.userid", user))
                 .add(Restrictions.eq("Role.rolid", role));
         return (Roleusr) criteria.uniqueResult();
@@ -80,10 +89,16 @@ public class DaoUsers implements InterfaceUsers {
 
     @Override
     public Users getByCode(Session session, Integer codigo) throws Exception {
-        String hql="from Users where userid=:codigo";
-        Query query=session.createQuery(hql);
-        query.setParameter("codigo", codigo);        
+        String hql = "from Users where userid=:codigo";
+        Query query = session.createQuery(hql);
+        query.setParameter("codigo", codigo);
         return (Users) query.uniqueResult();
+    }
+
+    @Override
+    public boolean registerRole(Session session, Roleusr roleusr) throws Exception {
+        session.save(roleusr);
+        return true;
     }
 
 }

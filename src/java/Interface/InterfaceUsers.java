@@ -15,7 +15,10 @@ import org.hibernate.Session;
  * @author J-MeN
  */
 public interface InterfaceUsers {
-    public boolean register(Session session, Users users,Roleusr roleusr) throws Exception;
+    
+    public boolean register(Session session, Users users) throws Exception;
+    
+    public boolean registerRole(Session session,Roleusr roleusr) throws Exception;
 
     public List<Users> getActives(Session session) throws Exception;
 
@@ -26,6 +29,8 @@ public interface InterfaceUsers {
     public boolean update(Session session, Users users) throws Exception;
     
     public Users getByUsuario(Session session, String usuario) throws Exception;
+    
+    public Users getByDocumento(Session session, String documento) throws Exception;
     
     public Roleusr getByRoleusr(Session session, int user,int role) throws Exception;
     

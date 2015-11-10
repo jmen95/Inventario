@@ -84,7 +84,12 @@ public class MbVUsers implements Serializable {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             if (daoUsers.getByUsuario(this.session, this.users.getUserusu()) != null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El usuario ya se encuentra registrado en el sistema"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El nombre de usuario ya se encuentra registrado en el sistema"));
+
+                return;
+            }
+            if (daoUsers.getByDocumento(this.session, this.users.getUserdoc()) != null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El número de     documento ya se encuentra registrado en el sistema"));
 
                 return;
             }
@@ -99,7 +104,9 @@ public class MbVUsers implements Serializable {
             role = daoRole.getByCode(session, codRole);
             roleusr.setRole(role);
             roleusr.setUsers(users);
-            daoUsers.register(session, users, roleusr);
+            
+            daoUsers.register(session, users);
+            daoUsers.registerRole(session, roleusr);
             transaction.commit();
             limpiar();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "El registro fue realizado correctamente.");
@@ -200,7 +207,7 @@ public class MbVUsers implements Serializable {
             roleusr.setRole(role);
             roleusr.setUsers(users);
             
-            daoUsers.register(session, null, roleusr);
+            daoUsers.registerRole(session, roleusr);
             transaction.commit();
             roleid2=null;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "El registro fue realizado correctamente.");
