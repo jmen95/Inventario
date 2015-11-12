@@ -10,6 +10,7 @@ import Pojo.Roleusr;
 import Pojo.Users;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -38,6 +39,7 @@ public class DaoUsers implements InterfaceUsers {
     @Override
     public List<Users> getAll(Session session) throws Exception {
         Criteria criteria = session.createCriteria(Users.class);
+        criteria.setFetchMode("roleusrs", FetchMode.JOIN);
         criteria.addOrder(Order.asc("userid"));
         return criteria.list();
     }

@@ -2,7 +2,7 @@ body {
     background-color: #ffffff;
     font-size: 12px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    color: #000000;  
+    color: #000000;
     margin: 10px;
 }
 
@@ -28,7 +28,7 @@ a:link:hover, a:visited:hover  {
   text-decoration : underline;
 }
 html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+  /* font-family: 'Roboto', 'Helvetica', sans-serif; */
 }
 .demo-avatar {
   width: 48px;

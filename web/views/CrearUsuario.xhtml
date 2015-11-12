@@ -14,25 +14,48 @@
             <ui:define name="usuario">Jesus Mendoza</ui:define>
             <ui:define name="content">
                 <br></br>
-                <h:form id="form" style="margin-left: 4px; margin-right: 4px;">      
+                <h:form id="form" style="margin-left: 4px; margin-right: 4px;">
+                    <p:dialog header="Roles" widgetVar="rolDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="Detail" style="text-align:center;">
+                            <p:dataTable id="tabla" var="ru" value="#{mbVUsers.listaroleusr}"  rowKey="#{ru.ruid}" style="margin-bottom:0">
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{ru.ruid}" />
+                                </p:column>
+                                <p:column headerText="Id rol">
+                                    <h:outputText value="#{ru.role.rolid}" />
+                                </p:column>
+                                <p:column headerText="Role">
+                                    <h:outputText value="#{ru.role.rolname}" />
+                                </p:column>
+                                <p:column headerText="Eliminar">
+                                    <h:outputText value="Eliminar" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </p:dialog>
                     <p:growl id="mensaje" showDetail="true" sticky="true" /> 
                     <div class="crearusuario mdl-card mdl-shadow--2dp">
                         <div class="mdl-card__title">
                             <h2 class="mdl-card__title-text">Crear Rol</h2>
                         </div>
                         <div class="mdl-card__supporting-text">
-                            <div class="mdl-grid">
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtNombre" value="Nombre Completo"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtNombre"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.username}"/>
-                                    </div>
-                                </div>  
+                            <div class="mdl-grid">  
                                 <div class="mdl-cell mdl-cell--3-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
                                         <h:outputLabel for="txtNumDoc" value="Número de documento"  styleClass="mdl-textfield__label"/>   
                                         <h:inputText id="txtNumDoc"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userdoc}"/>
                                     </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                        <h:outputLabel for="txtNombre" value="Nombre Completo"  styleClass="mdl-textfield__label"/>   
+                                        <h:inputText id="txtNombre"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.username}"/>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <p:selectCheckboxMenu id="rolid" label="Roles" value="#{mbVUsers.roleid}"   filter="true" filterMatchMode="startsWith" styleClass="select1">
+                                        <f:selectItems value="#{mbVUsers.listaRoles}" var="rol" itemLabel="#{rol.rolname}" itemValue="#{rol.rolid}" />
+                                    </p:selectCheckboxMenu>
                                 </div>
                                 <div class="mdl-cell mdl-cell--3-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
@@ -40,25 +63,21 @@
                                         <h:inputText id="txtUsuario"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userusu}"/>
                                     </div>
                                 </div>
-                                <div class="mdl-cell mdl-cell--3-col">
+                                <div class="mdl-cell mdl-cell--4-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtContasenia" value="Contraseña"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputSecret id="txtContasenia"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userpass}"/>
+                                        <h:outputLabel for="txtContasenia" value="Contraseña(6-12 carácteres)"  styleClass="mdl-textfield__label"/>   
+                                        <p:password id="txtContasenia" maxlength="12"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userpass}">
+                                            <f:validateLength minimum="6" />
+                                        </p:password>
                                     </div>
                                 </div>
-                                <div class="mdl-cell mdl-cell--3-col">
+                                <div class="mdl-cell mdl-cell--4-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
                                         <h:outputLabel for="txtContasenia2" value="Repita contraseña"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputSecret id="txtContasenia2"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.contrasenia2}"/>
+                                        <p:password id="txtContasenia2" maxlength="12"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.contrasenia2}">
+                                            <f:validateLength minimum="6" />
+                                        </p:password>
                                     </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <p:outputLabel for="rolid" value="Rol:"  /><br></br>
-                                    <p:selectOneMenu id="rolid" value="#{mbVUsers.roleid}" panelStyle="width:180px" rendered="true"
-                                                     effect="fade" style="width:160px" filter="true" filterMatchMode="startsWith" styleClass="select1">
-                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                        <f:selectItems value="#{mbVUsers.listaRoles}" var="rol" itemLabel="#{rol.rolname}" itemValue="#{rol.rolid}" />
-                                    </p:selectOneMenu>
                                 </div>
                                 <div class="mdl-cell mdl-cell--3-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
@@ -89,7 +108,7 @@
 
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <p:commandButton value="GUARDAR" ajax="false" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVUsers.register()}"/>                        
+                            <p:commandButton value="GUARDAR" update=":form" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVUsers.register()}"/>                        
                         </div>
                     </div>
                     <br></br>
@@ -148,52 +167,16 @@
                             </p:cellEditor>
                         </p:column>
                         <p:column style="width:32px;text-align: center;">
-                            <p:commandButton style="height: 18px;width:34px;" update=":form:menuDetail" oncomplete="PF('menuDialog').show()" icon="ui-icon-search" title="Editar">
-                                <f:setPropertyActionListener value="#{mbVUsers.getRoles(user.userid)}" target="#{mbVUsers.listaroleusr}" />
+                            <p:commandButton  update=":form:Detail" oncomplete="PF('rolDialog').show()" icon="ui-icon-search" title="Ver">
+                                <f:setPropertyActionListener value="#{mbVUsers.getRoles(user)}" target="#{mbVUsers.listaroleusr}" />
                             </p:commandButton>
                         </p:column>
                         <p:column style="width:32px">
                             <p:rowEditor />
                         </p:column>
                     </p:dataTable>
-                    <p:dialog header="Menú de opciones" widgetVar="menuDialog" showEffect="explode" hideEffect="explode" width="800">
-                        <p:outputPanel id="menuDetail" style="text-align:center;">
-                            
-                            <div class="mdl-grid">
 
-                                <div class="mdl-cell mdl-cell--2-col">
-                                    <p:outputLabel for="rolid2" value="Rol:"  />
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <p:selectOneMenu id="rolid2" value="#{mbVUsers.roleid2}" panelStyle="width:180px" rendered="true"
-                                                     effect="fade" style="width:160px" filter="true" filterMatchMode="startsWith" styleClass="select1">
-                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
-                                        <f:selectItems value="#{mbVUsers.listaRoles}" var="rol1" itemLabel="#{rol1.rolname}" itemValue="#{rol1.rolid}" />
-                                    </p:selectOneMenu>
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <p:commandButton value="GUARDAR" update=":form:menuDetail" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVUsers.regRole()}"/>                        
-                                </div>
-                            </div>
-                            <p:dataTable var="r" value="#{mbVUsers.listaroleusr}">
-                                <p:column headerText="Id" width="50">
-                                    <h:outputText value="#{r.ruid}" />
-                                </p:column>
 
-                                <p:column headerText="Codigo Rol">
-                                    <h:outputText value="#{r.role.rolname}" />
-                                </p:column>
-
-                                <p:column headerText="Rol">
-                                    <h:outputText value="#{r.role.rolname}" />
-                                </p:column>
-
-                                <p:column headerText="Eliminar">
-                                    <p:commandButton update=":form:menuDetail" icon="iu-icon-close"/>
-                                </p:column>
-                            </p:dataTable>
-                        </p:outputPanel>
-                    </p:dialog>
                 </h:form>
                 <br></br><br></br>
             </ui:define>

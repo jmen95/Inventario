@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -40,8 +40,8 @@ public class MbVUsers implements Serializable {
     private Users users;
     private String Contrasenia2;
     private int codRole;
-    private String roleid;
-    private String roleid2;
+    private String[] roleid;
+    private String[] roleid2;
     private Role role;
     private boolean estado;
     private Roleusr roleusr;
@@ -99,7 +99,7 @@ public class MbVUsers implements Serializable {
             } else {
                 this.users.setUserestado("IN");
             }
-            codRole = Integer.parseInt(roleid);
+            codRole = Integer.parseInt(roleid[0]);
             DaoRole daoRole = new DaoRole();
             role = daoRole.getByCode(session, codRole);
             roleusr.setRole(role);
@@ -165,16 +165,26 @@ public class MbVUsers implements Serializable {
         this.estado = true;
         this.Contrasenia2 = null;
         this.codRole = 0;
+          try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            roleusr = new Roleusr();
+            DaoRole daoRole = new DaoRole();
+            listaRoles = daoRole.getActives(session);
+            DaoUsers daoUsers = new DaoUsers();
+            listaUsers = daoUsers.getAll(session);
+        } catch (Exception ex) {
+            Logger.getLogger(MbVUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
-    public List<Roleusr> getRoles(int codigo) {
-        codUser=codigo;
+    public List<Roleusr> getRoles(Users user) {
+        codUser=user.getUserid();
         List<Roleusr> lista = new ArrayList();
         try {
             DaoUsers daoUsers = new DaoUsers();
             session = HibernateUtil.getSessionFactory().openSession();
-            lista = daoUsers.getRoles(session, codigo);
+            lista = daoUsers.getRoles(session, user.getUserid());
 
         } catch (Exception ex) {
             if (this.transaction != null) {
@@ -183,6 +193,7 @@ public class MbVUsers implements Serializable {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador " + ex.getMessage()));
         }
+        listaroleusr=lista;
         return lista;
     }
     
@@ -195,12 +206,12 @@ public class MbVUsers implements Serializable {
 
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            if (daoUsers.getByRoleusr(this.session, this.codUser,Integer.parseInt(roleid2)) != null) {
+            if (daoUsers.getByRoleusr(this.session, this.codUser,Integer.parseInt(roleid2[0])) != null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El usuario tiene este rol asignado"));
                 return;
             }
             
-            codRole = Integer.parseInt(roleid2);
+            codRole = Integer.parseInt(roleid2[0]);
             DaoRole daoRole = new DaoRole();
             role = daoRole.getByCode(session, codRole);
             users = daoUsers.getByCode(session, codUser);
@@ -274,13 +285,7 @@ public class MbVUsers implements Serializable {
         this.listaRoles = listaRoles;
     }
 
-    public String getRoleid() {
-        return roleid;
-    }
-
-    public void setRoleid(String roleid) {
-        this.roleid = roleid;
-    }
+    
 
     public List<Users> getListaUsers() {
         return listaUsers;
@@ -306,12 +311,22 @@ public class MbVUsers implements Serializable {
         this.codUser = codUser;
     }
 
-    public String getRoleid2() {
+    public String[] getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(String[] roleid) {
+        this.roleid = roleid;
+    }
+
+    public String[] getRoleid2() {
         return roleid2;
     }
 
-    public void setRoleid2(String roleid2) {
+    public void setRoleid2(String[] roleid2) {
         this.roleid2 = roleid2;
     }
+
+    
     
 }
