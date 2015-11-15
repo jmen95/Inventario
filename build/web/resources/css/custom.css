@@ -132,3 +132,22 @@ and open the template in the editor.
     background: #fff !important;
     color: #4f4f4f !important;
 }
+.ui-widget-header {
+    border: 1px solid #1B7BC8;
+    background: #2196F3 !important;color: #fff;
+    font-weight: bold;
+    text-shadow: 0px 0px 0px rgba(255,255,255,0.7);
+}
+.ui-widget-header .ui-icon {
+    background-image: url("/Inventario/faces/resources/imagenes/ui-icons_ededed_256x240.png") !important;
+}
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
+    color: #FFF;
+    text-decoration: none;
+    text-shadow: 0 0px 0 rgba(255, 255, 255, 0.8);
+}
+.ui-state-hover {
+    -moz-box-shadow: 0px 0px 0px #85b2cb, inset 0px 0px 0px #fff;
+     -webkit-box-shadow: 0px 0px 0px #85b2cb, inset 0px 0px 0px #fff; 
+     box-shadow: 0px 0px 0px #85b2cb, inset 0px 0px 0px #fff; 
+}

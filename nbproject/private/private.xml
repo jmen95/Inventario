@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/ManagedBeanView/MbVRole.java</file>
             <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/resources/css/custom.css</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/views/CrearRol.xhtml</file>
+            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/plantilla.xhtml</file>
+            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/hibernate.cfg.xml</file>
+            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/Dao/DaoUsers.java</file>
+            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/ManagedBeanView/MbVUsers.java</file>
         </group>
     </open-files>
 </project-private>

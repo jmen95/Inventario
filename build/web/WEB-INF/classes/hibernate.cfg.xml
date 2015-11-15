@@ -9,6 +9,8 @@
     <property name="hibernate.connection.password">010915</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.jdbc.batch_size">20</property>
+    <property name="hibernate.cache.use_second_level_cache">false</property>
     <mapping resource="Pojo/Producto.hbm.xml"/>
     <mapping resource="Pojo/Tipodescarga.hbm.xml"/>
     <mapping resource="Pojo/Grupo.hbm.xml"/>
