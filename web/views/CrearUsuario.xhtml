@@ -14,170 +14,176 @@
             <ui:define name="usuario">Jesus Mendoza</ui:define>
             <ui:define name="content">
                 <br></br>
-                <h:form id="form" style="margin-left: 4px; margin-right: 4px;">
-                    <p:dialog header="Roles" widgetVar="rolDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                        <p:outputPanel id="Detail" style="text-align:center;">
-                            <p:dataTable id="tabla" var="ru" value="#{mbVUsers.listaroleusr}"  rowKey="#{ru.ruid}" style="margin-bottom:0">
-                                <p:column headerText="Id">
-                                    <h:outputText value="#{ru.ruid}" />
-                                </p:column>
-                                <p:column headerText="Id rol">
-                                    <h:outputText value="#{ru.role.rolid}" />
-                                </p:column>
-                                <p:column headerText="Role">
-                                    <h:outputText value="#{ru.role.rolname}" />
-                                </p:column>
-                                <p:column headerText="Eliminar">
-                                    <h:outputText value="Eliminar" />
-                                </p:column>
-                            </p:dataTable>
-                        </p:outputPanel>
-                    </p:dialog>
-                    <p:growl id="mensaje" showDetail="true" sticky="true" /> 
-                    <div class="crearusuario mdl-card mdl-shadow--2dp">
-                        <div class="mdl-card__title">
-                            <h2 class="mdl-card__title-text">Crear Rol</h2>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            <div class="mdl-grid">  
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtNumDoc" value="Número de documento"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtNumDoc"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userdoc}"/>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--4-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtNombre" value="Nombre Completo"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtNombre"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.username}"/>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <p:selectCheckboxMenu id="rolid" label="Roles" value="#{mbVUsers.roleid}"   filter="true" filterMatchMode="startsWith" styleClass="select1">
-                                        <f:selectItems value="#{mbVUsers.listaRoles}" var="rol" itemLabel="#{rol.rolname}" itemValue="#{rol.rolid}" />
-                                    </p:selectCheckboxMenu>
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtUsuario" value="Nombre de usuario"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtUsuario"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userusu}"/>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--4-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtContasenia" value="Contraseña(6-12 carácteres)"  styleClass="mdl-textfield__label"/>   
-                                        <p:password id="txtContasenia" maxlength="12"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userpass}">
-                                            <f:validateLength minimum="6" />
-                                        </p:password>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--4-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtContasenia2" value="Repita contraseña"  styleClass="mdl-textfield__label"/>   
-                                        <p:password id="txtContasenia2" maxlength="12"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.contrasenia2}">
-                                            <f:validateLength minimum="6" />
-                                        </p:password>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtDireccion" value="Dirección"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtDireccion"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userdir}"/>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtTelefono" value="Teléfono"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtTelefono"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.usertele}"/>
-                                    </div>
-                                </div>
-                                <div class="mdl-cell mdl-cell--3-col">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
-                                        <h:outputLabel for="txtCorreo" value="Correo electrónico"  styleClass="mdl-textfield__label"/>   
-                                        <h:inputText id="txtCorreo"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.usercorreo}"/>
-                                    </div>
-                                </div>
+                <div id="general">
+                    <h:form id="form" style="margin-left: 4px; margin-right: 4px;">
 
-                                <div class="mdl-cell mdl-cell--2-col">
-                                    <p:selectBooleanCheckbox styleClass="mdl-checkbox__input" value="#{mbVUsers.estado}"/>
-                                    <p:spacer width="10px;"></p:spacer>
-                                    <h:outputText value="Activo"/>
-                                </div>
+                        <p:growl id="mensaje" showDetail="true" sticky="true" /> 
+                        <div class="crearusuario mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Crear Rol</h2>
                             </div>
+                            <div class="mdl-card__supporting-text">
+                                <div class="mdl-grid">  
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtNumDoc" value="Número de documento"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText id="txtNumDoc"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userdoc}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtNombre" value="Nombre Completo"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText id="txtNombre"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.username}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <p:selectCheckboxMenu id="rolid" label="Roles" value="#{mbVUsers.roleid}"   filter="true" filterMatchMode="startsWith" styleClass="select1">
+                                            <f:selectItems value="#{mbVUsers.listaRoles}" var="rol" itemLabel="#{rol.rolname}" itemValue="#{rol.rolid}" />
+                                        </p:selectCheckboxMenu>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtUsuario" value="Nombre de usuario"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText id="txtUsuario"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userusu}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtContasenia" value="Contraseña(6-12 carácteres)"  styleClass="mdl-textfield__label"/>   
+                                            <p:password id="txtContasenia" maxlength="12"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userpass}">
+                                                <f:validateLength minimum="6" />
+                                            </p:password>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--4-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtContasenia2" value="Repita contraseña"  styleClass="mdl-textfield__label"/>   
+                                            <p:password id="txtContasenia2" maxlength="12"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.contrasenia2}">
+                                                <f:validateLength minimum="6" />
+                                            </p:password>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtDireccion" value="Dirección"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText id="txtDireccion"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.userdir}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtTelefono" value="Teléfono"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText id="txtTelefono"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.usertele}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel for="txtCorreo" value="Correo electrónico"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText id="txtCorreo"  required="true" styleClass="mdl-textfield__input" value="#{mbVUsers.users.usercorreo}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <p:selectBooleanCheckbox styleClass="mdl-checkbox__input" value="#{mbVUsers.estado}"/>
+                                        <p:spacer width="10px;"></p:spacer>
+                                        <h:outputText value="Activo"/>
+                                    </div>
+                                </div>
 
 
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <p:commandButton value="GUARDAR"  process="@this" ajax="false" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVUsers.register()}"/>                        
+                            </div>
                         </div>
-                        <div class="mdl-card__actions mdl-card--border">
-                            <p:commandButton value="GUARDAR" update=":form" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVUsers.register()}"/>                        
-                        </div>
-                    </div>
-                    <br></br>
-                    <p:dataTable var="user" value="#{mbVUsers.listaUsers}" sortMode="multiple" editable="true" styleClass="tabla">
-                        <p:ajax event="rowEdit" listener="#{mbVUsers.update}" update=":form:mensaje" />
-                        <p:column headerText="Código" sortBy="#{user.userid}">
-                            <h:outputText value="#{user.userid}" />
-                        </p:column>
+                         
+                    </h:form>
+                    <h:form id="form2">
+                       
+                        <br></br>
+                        <p:dataTable id="tblUsuarios" var="user" value="#{mbVUsers.listaUsers}" sortMode="multiple" editable="true" styleClass="tabla">
+                            <p:ajax event="rowEdit" listener="#{mbVUsers.update}" update=":form:mensaje" />
+                            <p:column headerText="Código" sortBy="#{user.userid}">
+                                <h:outputText value="#{user.userid}" />
+                            </p:column>
 
-                        <p:column headerText="Nombre">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{user.username}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{user.username}" style="width:100%" label="Nombre"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="Usuario">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{user.userusu}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{user.userusu}" style="width:100%" label="Usuario"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="Contraseña">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{user.userpass}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{user.userpass}" style="width:100%" label="Contraseña"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="# Documento">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{user.userdoc}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{user.userdoc}" style="width:100%" label="# Documento"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="Dirección">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{user.userdir}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{user.userdir}" style="width:100%" label="Dirección"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="Teléfono">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{user.usertele}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{user.usertele}" style="width:100%" label="Teléfono"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                            <p:column headerText="Nombre">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{user.username}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{user.username}" style="width:100%" label="Nombre"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Usuario">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{user.userusu}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{user.userusu}" style="width:100%" label="Usuario"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Contraseña">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{user.userpass}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{user.userpass}" style="width:100%" label="Contraseña"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="# Documento">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{user.userdoc}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{user.userdoc}" style="width:100%" label="# Documento"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Dirección">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{user.userdir}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{user.userdir}" style="width:100%" label="Dirección"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Teléfono">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{user.usertele}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{user.usertele}" style="width:100%" label="Teléfono"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
 
-                        <p:column headerText="Estado">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{user.userestado=='AC'?'ACTIVO':'INACTIVO'}" /></f:facet>
-                                <f:facet name="input">
-                                    <h:selectOneMenu value="#{user.userestado}" style="width:100%">
-                                        <f:selectItem itemLabel="ACTIVO" itemValue="AC" />
-                                        <f:selectItem itemLabel="INACTIVO" itemValue="IN" />
-                                    </h:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column style="width:32px;text-align: center;">
-                            <p:commandButton  update=":form:Detail" oncomplete="PF('rolDialog').show()" icon="ui-icon-search" title="Ver">
-                                <f:setPropertyActionListener value="#{mbVUsers.getRoles(user)}" target="#{mbVUsers.listaroleusr}" />
-                            </p:commandButton>
-                        </p:column>
-                        <p:column style="width:32px">
-                            <p:rowEditor />
-                        </p:column>
-                    </p:dataTable>
+                            <p:column headerText="Estado">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{user.userestado=='AC'?'ACTIVO':'INACTIVO'}" /></f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu value="#{user.userestado}" style="width:100%">
+                                            <f:selectItem itemLabel="ACTIVO" itemValue="AC" />
+                                            <f:selectItem itemLabel="INACTIVO" itemValue="IN" />
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column style="width:32px;text-align: center;">
+                                <p:commandButton  update=":form2:Detail" oncomplete="PF('rolDialog').show()" icon="ui-icon-search" title="Ver">
+                                    <f:setPropertyActionListener value="#{mbVUsers.getRoles(user)}" target="#{mbVUsers.listaroleusr}" />
+                                </p:commandButton>
+                            </p:column>
+                            <p:column style="width:32px">
+                                <p:rowEditor />
+                            </p:column>
+                        </p:dataTable>
+                        <p:dialog header="Roles" widgetVar="rolDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="Detail" style="text-align:center;">
+                                <p:dataTable id="tabla1" var="ru" value="#{mbVUsers.listaroleusr}"  rowKey="#{ru.ruid}" style="margin-bottom:0">
+                                    <p:column headerText="Id">
+                                        <h:outputText value="#{ru.ruid}" />
+                                    </p:column>
+                                    <p:column headerText="Id rol">
+                                        <h:outputText value="#{ru.role.rolid}" />
+                                    </p:column>
+                                    <p:column headerText="Role">
+                                        <h:outputText value="#{ru.role.rolname}" />
+                                    </p:column>
+                                    <p:column headerText="Eliminar">
+                                        <h:outputText value="Eliminar" />
+                                    </p:column>
+                                </p:dataTable>
+                            </p:outputPanel>
+                        </p:dialog>
 
-
-                </h:form>
+                    </h:form>
+                </div>
                 <br></br><br></br>
             </ui:define>
         </ui:composition>

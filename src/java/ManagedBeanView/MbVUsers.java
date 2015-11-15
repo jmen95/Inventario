@@ -74,7 +74,7 @@ public class MbVUsers implements Serializable {
         this.transaction = null;
         try {
             if (!this.users.getUserpass().equals(this.Contrasenia2)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Las contraseñas no coenciden"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Las contraseñas no coinciden"));
 
                 return;
             }
@@ -99,14 +99,19 @@ public class MbVUsers implements Serializable {
             } else {
                 this.users.setUserestado("IN");
             }
-            codRole = Integer.parseInt(roleid[0]);
-            DaoRole daoRole = new DaoRole();
-            role = daoRole.getByCode(session, codRole);
-            roleusr.setRole(role);
-            roleusr.setUsers(users);
-            
+
             daoUsers.register(session, users);
-            daoUsers.registerRole(session, roleusr);
+            
+            for (int i = 0; i < roleid.length; i++) {
+                roleusr = new Roleusr();
+                roleusr.setUsers(users);
+                codRole = Integer.parseInt(roleid[i]);
+                DaoRole daoRole = new DaoRole();
+                role = daoRole.getByCode(session, codRole);
+                roleusr.setRole(role);
+                session.save(roleusr);
+            }
+
             transaction.commit();
             limpiar();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "El registro fue realizado correctamente.");
@@ -165,7 +170,7 @@ public class MbVUsers implements Serializable {
         this.estado = true;
         this.Contrasenia2 = null;
         this.codRole = 0;
-          try {
+        try {
             session = HibernateUtil.getSessionFactory().openSession();
             roleusr = new Roleusr();
             DaoRole daoRole = new DaoRole();
@@ -179,7 +184,7 @@ public class MbVUsers implements Serializable {
     }
 
     public List<Roleusr> getRoles(Users user) {
-        codUser=user.getUserid();
+        codUser = user.getUserid();
         List<Roleusr> lista = new ArrayList();
         try {
             DaoUsers daoUsers = new DaoUsers();
@@ -193,11 +198,11 @@ public class MbVUsers implements Serializable {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error:", "Por favor contacte con su administrador " + ex.getMessage()));
         }
-        listaroleusr=lista;
+//        listaroleusr=lista;
         return lista;
     }
-    
-    public void regRole(){
+
+    public void regRole() {
         this.session = null;
         this.transaction = null;
         try {
@@ -206,21 +211,21 @@ public class MbVUsers implements Serializable {
 
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            if (daoUsers.getByRoleusr(this.session, this.codUser,Integer.parseInt(roleid2[0])) != null) {
+            if (daoUsers.getByRoleusr(this.session, this.codUser, Integer.parseInt(roleid2[0])) != null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "El usuario tiene este rol asignado"));
                 return;
             }
-            
+
             codRole = Integer.parseInt(roleid2[0]);
             DaoRole daoRole = new DaoRole();
             role = daoRole.getByCode(session, codRole);
             users = daoUsers.getByCode(session, codUser);
             roleusr.setRole(role);
             roleusr.setUsers(users);
-            
+
             daoUsers.registerRole(session, roleusr);
             transaction.commit();
-            roleid2=null;
+            roleid2 = null;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "El registro fue realizado correctamente.");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         } catch (Exception ex) {
@@ -236,7 +241,12 @@ public class MbVUsers implements Serializable {
 
         }
     }
-    
+
+    public void mensaje() {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto:", "El registro fue realizado correctamente.");
+        RequestContext.getCurrentInstance().showMessageInDialog(message);
+    }
+
     public Users getUsers() {
         return users;
     }
@@ -285,8 +295,6 @@ public class MbVUsers implements Serializable {
         this.listaRoles = listaRoles;
     }
 
-    
-
     public List<Users> getListaUsers() {
         return listaUsers;
     }
@@ -327,6 +335,4 @@ public class MbVUsers implements Serializable {
         this.roleid2 = roleid2;
     }
 
-    
-    
 }

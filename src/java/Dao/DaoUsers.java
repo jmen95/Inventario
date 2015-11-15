@@ -39,7 +39,6 @@ public class DaoUsers implements InterfaceUsers {
     @Override
     public List<Users> getAll(Session session) throws Exception {
         Criteria criteria = session.createCriteria(Users.class);
-        criteria.setFetchMode("roleusrs", FetchMode.JOIN);
         criteria.addOrder(Order.asc("userid"));
         return criteria.list();
     }
@@ -75,8 +74,8 @@ public class DaoUsers implements InterfaceUsers {
     @Override
     public List<Roleusr> getRoles(Session session, int codigo) throws Exception {
         Criteria criteria = session.createCriteria(Roleusr.class)
-                .add(Restrictions.eq("Users.userid", codigo))
-                .createCriteria("Role", "r")
+                .add(Restrictions.eq("users.userid", codigo))
+                .createCriteria("role", "r")
                 .setResultTransformer(Criteria.ROOT_ENTITY);
         return criteria.list();
     }
