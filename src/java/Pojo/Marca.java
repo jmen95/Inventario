@@ -1,5 +1,5 @@
 package Pojo;
-// Generated 2/11/2015 09:58:29 AM by Hibernate Tools 4.3.1
+// Generated 21/11/2015 08:46:55 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -14,6 +14,7 @@ public class Marca  implements java.io.Serializable {
      private Integer marCodigo;
      private String marNombre;
      private String marDescripcion;
+     private String marEstado;
      private Set productos = new HashSet(0);
 
     public Marca() {
@@ -23,9 +24,10 @@ public class Marca  implements java.io.Serializable {
     public Marca(String marNombre) {
         this.marNombre = marNombre;
     }
-    public Marca(String marNombre, String marDescripcion, Set productos) {
+    public Marca(String marNombre, String marDescripcion, String marEstado, Set productos) {
        this.marNombre = marNombre;
        this.marDescripcion = marDescripcion;
+       this.marEstado = marEstado;
        this.productos = productos;
     }
    
@@ -49,6 +51,13 @@ public class Marca  implements java.io.Serializable {
     
     public void setMarDescripcion(String marDescripcion) {
         this.marDescripcion = marDescripcion;
+    }
+    public String getMarEstado() {
+        return this.marEstado;
+    }
+    
+    public void setMarEstado(String marEstado) {
+        this.marEstado = marEstado;
     }
     public Set getProductos() {
         return this.productos;

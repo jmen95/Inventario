@@ -1,5 +1,5 @@
 package Pojo;
-// Generated 2/11/2015 09:58:29 AM by Hibernate Tools 4.3.1
+// Generated 21/11/2015 08:46:55 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,31 +11,31 @@ import java.util.Set;
 public class Tipodescarga  implements java.io.Serializable {
 
 
-     private int tideCodigo;
+     private Integer tideCodigo;
      private String tideNombre;
      private String tideDescripcion;
+     private String tideEstado;
      private Set productos = new HashSet(0);
 
     public Tipodescarga() {
     }
 
 	
-    public Tipodescarga(int tideCodigo, String tideNombre) {
-        this.tideCodigo = tideCodigo;
+    public Tipodescarga(String tideNombre) {
         this.tideNombre = tideNombre;
     }
-    public Tipodescarga(int tideCodigo, String tideNombre, String tideDescripcion, Set productos) {
-       this.tideCodigo = tideCodigo;
+    public Tipodescarga(String tideNombre, String tideDescripcion, String tideEstado, Set productos) {
        this.tideNombre = tideNombre;
        this.tideDescripcion = tideDescripcion;
+       this.tideEstado = tideEstado;
        this.productos = productos;
     }
    
-    public int getTideCodigo() {
+    public Integer getTideCodigo() {
         return this.tideCodigo;
     }
     
-    public void setTideCodigo(int tideCodigo) {
+    public void setTideCodigo(Integer tideCodigo) {
         this.tideCodigo = tideCodigo;
     }
     public String getTideNombre() {
@@ -51,6 +51,13 @@ public class Tipodescarga  implements java.io.Serializable {
     
     public void setTideDescripcion(String tideDescripcion) {
         this.tideDescripcion = tideDescripcion;
+    }
+    public String getTideEstado() {
+        return this.tideEstado;
+    }
+    
+    public void setTideEstado(String tideEstado) {
+        this.tideEstado = tideEstado;
     }
     public Set getProductos() {
         return this.productos;

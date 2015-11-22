@@ -1,5 +1,5 @@
 package Pojo;
-// Generated 2/11/2015 09:58:29 AM by Hibernate Tools 4.3.1
+// Generated 21/11/2015 08:46:55 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -28,6 +28,7 @@ public class Producto  implements java.io.Serializable {
      private Date proFechaVencimiento;
      private String proReferencia;
      private String proLote;
+     private Integer proIdUsuario;
      private Set movimientoses = new HashSet(0);
 
     public Producto() {
@@ -39,7 +40,7 @@ public class Producto  implements java.io.Serializable {
         this.proEstado = proEstado;
         this.proFechaIngreso = proFechaIngreso;
     }
-    public Producto(String proCodigoBarra, Grupo grupo, Marca marca, Tipodescarga tipodescarga, String proNombre, Integer proValorCompra, Integer proStockMaximo, Integer proStockMinimo, Integer proStockBodega, String proEstado, Date proFechaIngreso, String proUbicacion, String proImagen, Date proFechaVencimiento, String proReferencia, String proLote, Set movimientoses) {
+    public Producto(String proCodigoBarra, Grupo grupo, Marca marca, Tipodescarga tipodescarga, String proNombre, Integer proValorCompra, Integer proStockMaximo, Integer proStockMinimo, Integer proStockBodega, String proEstado, Date proFechaIngreso, String proUbicacion, String proImagen, Date proFechaVencimiento, String proReferencia, String proLote, Integer proIdUsuario, Set movimientoses) {
        this.proCodigoBarra = proCodigoBarra;
        this.grupo = grupo;
        this.marca = marca;
@@ -56,6 +57,7 @@ public class Producto  implements java.io.Serializable {
        this.proFechaVencimiento = proFechaVencimiento;
        this.proReferencia = proReferencia;
        this.proLote = proLote;
+       this.proIdUsuario = proIdUsuario;
        this.movimientoses = movimientoses;
     }
    
@@ -170,6 +172,13 @@ public class Producto  implements java.io.Serializable {
     
     public void setProLote(String proLote) {
         this.proLote = proLote;
+    }
+    public Integer getProIdUsuario() {
+        return this.proIdUsuario;
+    }
+    
+    public void setProIdUsuario(Integer proIdUsuario) {
+        this.proIdUsuario = proIdUsuario;
     }
     public Set getMovimientoses() {
         return this.movimientoses;

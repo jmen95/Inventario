@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 21/11/2015 08:47:00 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Pojo.Tipodescarga" table="tipodescarga" catalog="inventario" optimistic-lock="version">
-        <id name="tideCodigo" type="int">
+        <id name="tideCodigo" type="java.lang.Integer">
             <column name="tideCodigo" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="tideNombre" type="string">
             <column name="tideNombre" length="100" not-null="true" />
         </property>
         <property name="tideDescripcion" type="string">
             <column name="tideDescripcion" length="200" />
+        </property>
+        <property name="tideEstado" type="string">
+            <column name="tideEstado" length="2" />
         </property>
         <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
             <key>

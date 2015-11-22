@@ -1,5 +1,5 @@
 package Pojo;
-// Generated 2/11/2015 09:58:29 AM by Hibernate Tools 4.3.1
+// Generated 21/11/2015 08:46:55 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -14,6 +14,7 @@ public class Grupo  implements java.io.Serializable {
      private Integer gruCodigo;
      private String gruNombre;
      private String gruDescripcion;
+     private String gruEstado;
      private Set productos = new HashSet(0);
 
     public Grupo() {
@@ -23,9 +24,10 @@ public class Grupo  implements java.io.Serializable {
     public Grupo(String gruNombre) {
         this.gruNombre = gruNombre;
     }
-    public Grupo(String gruNombre, String gruDescripcion, Set productos) {
+    public Grupo(String gruNombre, String gruDescripcion, String gruEstado, Set productos) {
        this.gruNombre = gruNombre;
        this.gruDescripcion = gruDescripcion;
+       this.gruEstado = gruEstado;
        this.productos = productos;
     }
    
@@ -49,6 +51,13 @@ public class Grupo  implements java.io.Serializable {
     
     public void setGruDescripcion(String gruDescripcion) {
         this.gruDescripcion = gruDescripcion;
+    }
+    public String getGruEstado() {
+        return this.gruEstado;
+    }
+    
+    public void setGruEstado(String gruEstado) {
+        this.gruEstado = gruEstado;
     }
     public Set getProductos() {
         return this.productos;

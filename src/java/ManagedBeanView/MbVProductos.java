@@ -12,12 +12,10 @@ import Pojo.Marca;
 import Pojo.Producto;
 import Pojo.Tipodescarga;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
@@ -26,14 +24,10 @@ import org.primefaces.context.RequestContext;
  *
  * @author J-MeN
  */
-@Named(value = "mbVProducto")
-@ViewScoped
-public class MbVProducto {
-
-    /**
-     * Creates a new instance of MbVProducto
-     */
-    private Producto producto;
+@ManagedBean
+@RequestScoped
+public class MbVProductos {
+ private Producto producto;
     private String codMarca;
     private String codGrupo;
     private String codTipoDescarga;
@@ -43,7 +37,7 @@ public class MbVProducto {
     Session session;
     Transaction transaction;
 
-    public MbVProducto() {
+    public MbVProductos() {
         try {
             DaoProducto daoProducto = new DaoProducto();
             session = HibernateUtil.getSessionFactory().openSession();
@@ -162,5 +156,6 @@ public class MbVProducto {
     public void setListaTipodescarga(List<Tipodescarga> listaTipodescarga) {
         this.listaTipodescarga = listaTipodescarga;
     }
+    
     
 }

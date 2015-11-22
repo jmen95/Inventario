@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 21/11/2015 08:47:00 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Pojo.Marca" table="marca" catalog="inventario" optimistic-lock="version">
         <id name="marCodigo" type="java.lang.Integer">
@@ -13,6 +13,9 @@
         </property>
         <property name="marDescripcion" type="string">
             <column name="marDescripcion" length="200" />
+        </property>
+        <property name="marEstado" type="string">
+            <column name="marEstado" length="2" />
         </property>
         <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
             <key>

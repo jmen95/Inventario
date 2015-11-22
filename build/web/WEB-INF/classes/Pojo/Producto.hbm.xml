@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 2/11/2015 09:58:30 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 21/11/2015 08:47:00 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Pojo.Producto" table="producto" catalog="inventario" optimistic-lock="version">
         <id name="proCodigoBarra" type="string">
@@ -54,6 +54,11 @@
         </property>
         <property name="proLote" type="string">
             <column name="proLote" length="50" />
+        </property>
+        <property name="proIdUsuario" type="java.lang.Integer">
+            <column name="proIdUsuario">
+                <comment>Usuario que modifica</comment>
+            </column>
         </property>
         <set name="movimientoses" table="movimientos" inverse="true" lazy="true" fetch="select">
             <key>

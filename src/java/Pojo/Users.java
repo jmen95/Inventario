@@ -1,5 +1,5 @@
 package Pojo;
-// Generated 2/11/2015 09:58:29 AM by Hibernate Tools 4.3.1
+// Generated 21/11/2015 08:46:55 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -21,8 +21,8 @@ public class Users  implements java.io.Serializable {
      private String usercorreo;
      private String userestado;
      private Set movimientoses = new HashSet(0);
-     private Set auditorias = new HashSet(0);
      private Set roleusrs = new HashSet(0);
+     private Set auditorias = new HashSet(0);
 
     public Users() {
     }
@@ -34,7 +34,7 @@ public class Users  implements java.io.Serializable {
         this.userusu = userusu;
         this.userestado = userestado;
     }
-    public Users(String username, String userpass, String userdoc, String userusu, String usertele, String userdir, String usercorreo, String userestado, Set movimientoses, Set auditorias, Set roleusrs) {
+    public Users(String username, String userpass, String userdoc, String userusu, String usertele, String userdir, String usercorreo, String userestado, Set movimientoses, Set roleusrs, Set auditorias) {
        this.username = username;
        this.userpass = userpass;
        this.userdoc = userdoc;
@@ -44,8 +44,8 @@ public class Users  implements java.io.Serializable {
        this.usercorreo = usercorreo;
        this.userestado = userestado;
        this.movimientoses = movimientoses;
-       this.auditorias = auditorias;
        this.roleusrs = roleusrs;
+       this.auditorias = auditorias;
     }
    
     public Integer getUserid() {
@@ -118,19 +118,19 @@ public class Users  implements java.io.Serializable {
     public void setMovimientoses(Set movimientoses) {
         this.movimientoses = movimientoses;
     }
-    public Set getAuditorias() {
-        return this.auditorias;
-    }
-    
-    public void setAuditorias(Set auditorias) {
-        this.auditorias = auditorias;
-    }
     public Set getRoleusrs() {
         return this.roleusrs;
     }
     
     public void setRoleusrs(Set roleusrs) {
         this.roleusrs = roleusrs;
+    }
+    public Set getAuditorias() {
+        return this.auditorias;
+    }
+    
+    public void setAuditorias(Set auditorias) {
+        this.auditorias = auditorias;
     }
 
 
