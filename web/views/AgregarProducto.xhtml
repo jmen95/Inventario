@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../plantilla.xhtml">
+            <ui:define name="title">::Agregar productos::</ui:define>
+            <ui:define name="content">
+                <br></br>
+                <h:form id="form" style="margin-left: 4px; margin-right: 4px;">      
+                    <p:growl id="mensaje" showDetail="true" sticky="true" /> 
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Código de barras"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proCodigoBarra}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Nombre"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proNombre}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--3-col">
+                            <p:selectOneMenu effect="skate" id="rolid" label="Marca" value="#{mbVProducto.codMarca}"   filter="true" filterMatchMode="startsWith" styleClass="select1">
+                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                <f:selectItems value="#{mbVProducto.listaMarca}" var="m" itemLabel="#{m.marNombre}" itemValue="#{m.marCodigo}" />
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Valor compra"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="false" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proValorCompra}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Stock mínimo"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proStockMinimo}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Cantidad"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proStockBodega}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--3-col">
+                            <p:selectOneMenu effect="skate" id="rolid" label="Categoria" value="#{mbVProducto.codGrupo}"   filter="true" filterMatchMode="startsWith" styleClass="select1">
+                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                <f:selectItems value="#{mbVProducto.listaGrupo}" var="g" itemLabel="#{g.gruNombre}" itemValue="#{g.gruCodigo}" />
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Ubicación"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="false" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proUbicacion}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Fecha de vencimiento"  styleClass="mdl-textfield__label"/>   
+                                <p:calendar id="effect" required="true" value="#{mbVProducto.producto.proFechaVencimiento}" effect="fold" />
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="tipo de descarga"  styleClass="mdl-textfield__label"/>   
+                                <p:selectOneMenu  value="#{mbVProducto.codTipoDescarga}" style="width:125px">
+                                    <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                    <f:selectItems value="#{mbVProducto.listaTipodescarga}" var="l" itemLabel="#{l.tideNombre}" itemValue="#{l.tideCodigo}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Referencia"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proReferencia}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--6-col">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                <h:outputLabel  value="Lote"  styleClass="mdl-textfield__label"/>   
+                                <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVProducto.producto.proLote}"/>
+                            </div>
+                        </div>
+                        <div class="mdl-cell mdl-cell--3-col">
+                            <p:selectOneMenu effect="skate" id="rolid" label="Estado" value="#{mbVProducto.producto.proEstado}" styleClass="select1">
+                                <f:selectItem itemLabel="Activo" itemValue="AC" />
+                                <f:selectItem itemLabel="Inactivo" itemValue="IN" />
+                            </p:selectOneMenu>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
+
