@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Inventario</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmRealizarVentas">
+            <p:growl id="mensajeGeneral" showDetail="true"/>
+            <h1>Egreso de productos</h1>
+            <hr />
+            <p:panelGrid columns="1">
+                <h:panelGroup>
+
+                    <h:outputLabel value="Candidad a utilizar"></h:outputLabel>
+                    <h:inputText value="#{mbVEgreso.cantidad}"></h:inputText>
+
+                    <h:outputLabel value="Agregar por código de barras "></h:outputLabel>                    
+                    <p:inputText id="txtAgregarPorCodigoBarras" value="#{mbVEgreso.valorCodigoBarras}">
+                        <p:ajax event="keyup" listener="#{mbVEgreso.agregarListaVentaDetallePorCodigoBarras()}"/>
+                    </p:inputText>
+
+                    <br /><br />
+                    <p:dataTable value="#{mbVEgreso.listaProducto}" var="item" style="font-size: 10px;width: 700px;" scrollable="true" scrollHeight="100">
+                        <p:column headerText="CÓDIGO DE BARRAS">
+                            <h:outputText value="#{item.proCodigoBarra}"/>
+                        </p:column>
+                        <p:column headerText="NOMBRE" filterBy="nombre">
+                            <h:outputText value="#{item.proNombre}"/>
+                        </p:column>
+                        <p:column headerText="CATEGORÍA">
+                            <h:outputText value="#{item.grupo.gruDescripcion}"/>
+                        </p:column>
+                        <p:column headerText="MARCA">
+                            <h:outputText value="#{item.marca.marDescripcion}"/>
+                        </p:column>
+                        <p:column headerText="Ubicación" style="text-align: center;">
+                            <h:outputText value="#{item.proUbicacion}"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Agregar" ajax="true" actionListener="#{mbVEgreso.agregarListaVentaDetalle(item)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </p:panelGrid>
+            <hr />
+            <b>Lista de productos a vender</b>
+            <hr />
+            <p:dataTable id="tablaListaProductosVenta" value="#{mbVEgreso.listaVentaDetalle}" var="item" style="font-size: 10px;">
+                <p:column headerText="CÓDIGO DE BARRAS" style="text-align: center;">
+                    <h:outputText value="#{item.proCodigoBarra}"/>
+                </p:column>
+                <p:column headerText="NOMBRE" style="text-align: left;">
+                    <h:outputText value="#{item.proNombre}"/>
+                </p:column>
+                <p:column headerText="Ubicación" style="text-align: center;">
+                    <h:outputText value="#{item.proUbicacion}"/>
+                </p:column>
+                <p:column headerText="Cantidad restante" style="text-align: center;">
+                    <p:inputText value="#{item.proStockBodega}" style="text-align: center;" />                    
+                </p:column>
+                <p:column style="text-align: center;">
+                    <p:commandButton value="Retirar de la lista" ajax="true" actionListener="#{mbVEgreso.retirarListaVentaDetalle(item)}"/>
+                </p:column>
+            </p:dataTable>
+            <p:panelGrid id="panelFinalVenta" columns="1" style="text-align: right;width: 100%;">
+                <h:panelGroup>
+                    <p:commandButton value="Registrar" ajax="false" actionListener="#{mbVEgreso.realizarVenta()}"/>
+                </h:panelGroup>
+            </p:panelGrid>
+            
+        </h:form>
+    </h:body>
+</html>
+

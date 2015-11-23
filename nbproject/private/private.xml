@@ -3,16 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/resources/css/custom.css</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/Pojo/Producto.hbm.xml</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/Pojo/Producto.java</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/ManagedBeanView/MbVVenta.java</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/views/controlInventario.xhtml</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/Dao/DaoProducto.java</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/src/java/ManagedBeanView/MbVProductos.java</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/views/CrearUsuario.xhtml</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/resources/css/material.custom.css</file>
-            <file>file:/C:/Users/J-MeN/Documents/NetBeansProjects/Inventario/web/views/AgregarProducto.xhtml</file>
+            <file>file:/C:/Users/jhonny.villa/Documents/GitHub/Inventario/web/views/egresoInventario.xhtml</file>
+            <file>file:/C:/Users/jhonny.villa/Documents/GitHub/Inventario/src/java/ManagedBeanView/MbVEgreso.java</file>
+            <file>file:/C:/Users/jhonny.villa/Documents/GitHub/Inventario/src/java/Dao/DaoUsers.java</file>
+            <file>file:/C:/Users/jhonny.villa/Documents/GitHub/Inventario/src/java/Pojo/Producto.java</file>
+            <file>file:/C:/Users/jhonny.villa/Documents/GitHub/Inventario/web/plantilla.xhtml</file>
+            <file>file:/C:/Users/jhonny.villa/Documents/GitHub/Inventario/web/views/AgregarProducto.xhtml</file>
+            <file>file:/C:/Users/jhonny.villa/Documents/GitHub/Inventario/src/java/Dao/DaoEgreso.java</file>
         </group>
     </open-files>
 </project-private>
