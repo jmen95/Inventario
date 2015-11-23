@@ -35,10 +35,9 @@ public class Producto  implements java.io.Serializable {
     }
 
 	
-    public Producto(String proCodigoBarra, String proEstado, Date proFechaIngreso) {
+    public Producto(String proCodigoBarra, String proEstado) {
         this.proCodigoBarra = proCodigoBarra;
         this.proEstado = proEstado;
-        this.proFechaIngreso = proFechaIngreso;
     }
     public Producto(String proCodigoBarra, Grupo grupo, Marca marca, Tipodescarga tipodescarga, String proNombre, Integer proValorCompra, Integer proStockMaximo, Integer proStockMinimo, Integer proStockBodega, String proEstado, Date proFechaIngreso, String proUbicacion, String proImagen, Date proFechaVencimiento, String proReferencia, String proLote, Integer proIdUsuario, Set movimientoses) {
        this.proCodigoBarra = proCodigoBarra;

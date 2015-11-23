@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>APP VENTA</title>
+    </h:head>
+    <h:body>
+        <h:form id="frmRealizarVentas">
+            <p:growl id="mensajeGeneral" showDetail="true"/>
+            <h1>Venta de Productos</h1>
+            <hr />
+            <p:panelGrid columns="1">
+                <h:panelGroup>
+                    Agregar por código de barras
+                    <p:inputText id="txtAgregarPorCodigoBarras" value="#{mbVVenta.valorCodigoBarras}">
+                        <p:ajax event="keyup" listener="#{mbVVenta.agregarListaVentaDetallePorCodigoBarras()}"/>
+                    </p:inputText>
+                    <br /><br />
+                    <p:dataTable value="#{mbVVenta.allProducto}" var="item" style="font-size: 10px;width: 700px;" scrollable="true" scrollHeight="100">
+                        <p:column headerText="CÓDIGO DE BARRAS">
+                            <h:outputText value="#{item.codigoBarras}"/>
+                        </p:column>
+                        <p:column headerText="NOMBRE" filterBy="nombre">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column headerText="PRECIO UNITARIO">
+                            <h:outputText value="#{item.precioVentaUnitario}"/>
+                        </p:column>
+                        <p:column headerText="STOCK">
+                            <h:outputText value="#{item.cantidad}"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="Agregar" ajax="true" actionListener="#{mbVVenta.agregarListaVentaDetalle(item.idProducto)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </p:panelGrid>
+            <hr />
+            <b>Lista de productos a vender</b>
+            <hr />
+            <p:dataTable id="tablaListaProductosVenta" value="#{mbVVenta.listaVentaDetalle}" var="item" style="font-size: 10px;">
+                <p:column headerText="CÓDIGO DE BARRAS" style="text-align: center;">
+                    <h:outputText value="#{item.codigoBarrasProducto}"/>
+                </p:column>
+                <p:column headerText="NOMBRE" style="text-align: left;">
+                    <h:outputText value="#{item.nombreProducto}"/>
+                </p:column>
+                <p:column headerText="PRECIO UNITARIO" style="text-align: center;">
+                    <h:outputText value="#{item.precioVentaUnitarioProducto}"/>
+                </p:column>
+                <p:column headerText="Cantidad" style="text-align: center;">
+                    <p:inputText value="#{item.cantidad}" style="text-align: center;" />                    
+                </p:column>
+                <p:column headerText="Total" style="text-align: center;">
+                    S./ 
+                    <h:outputText value="#{item.totalPrecioVenta}"/>
+                </p:column>
+                <p:column style="text-align: center;">
+                    <p:commandButton value="Retirar de la lista" ajax="true" actionListener="#{mbVVenta.retirarListaVentaDetalle(item.codigoBarrasProducto)}"/>
+                </p:column>
+            </p:dataTable>
+            <p:panelGrid id="panelFinalVenta" columns="1" style="text-align: right;width: 100%;">
+                <h:panelGroup>
+                    <p:commandButton value="Actualizar monto de compra" actionListener="#{mbVVenta.calcularCostos()}" />
+                    S./ 
+                    <h:outputText value="#{mbVVenta.venta.precioVentaTotal}" style="box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.7);padding: 7px;"/>
+                    -------------------
+                    <p:commandButton value="Realizar venta" ajax="false" actionListener="#{mbVVenta.realizarVenta()}"/>
+                </h:panelGroup>
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

@@ -38,7 +38,7 @@
             </column>
         </property>
         <property name="proFechaIngreso" type="timestamp">
-            <column name="proFechaIngreso" length="19" not-null="true" />
+            <column name="proFechaIngreso" length="19"/>
         </property>
         <property name="proUbicacion" type="string">
             <column name="proUbicacion" length="50" />
@@ -50,10 +50,10 @@
             <column name="proFechaVencimiento" length="10" />
         </property>
         <property name="proReferencia" type="string">
-            <column name="proReferencia" length="50" />
+            <column name="proReferencia" length="150" />
         </property>
         <property name="proLote" type="string">
-            <column name="proLote" length="50" />
+            <column name="proLote" length="150" />
         </property>
         <property name="proIdUsuario" type="java.lang.Integer">
             <column name="proIdUsuario">
