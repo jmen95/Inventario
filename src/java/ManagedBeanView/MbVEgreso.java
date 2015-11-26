@@ -7,6 +7,8 @@ package ManagedBeanView;
 
 import Dao.DaoEgreso;
 import HibernateUtil.HibernateUtil;
+import Pojo.Grupo;
+import Pojo.Marca;
 import Pojo.Producto;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,6 @@ public class MbVEgreso {
     /**
      * Creates a new instance of MbVEgreso
      */
-   
     /**
      * Creates a new instance of MbRVenta
      */
@@ -38,8 +39,11 @@ public class MbVEgreso {
 
     private Producto producto;
     private List<Producto> listaProducto;
+    private List<Producto> listaProductof;
     private List<Producto> listaVentaDetalle;
-    private int cantidad = 0;
+    private List<Marca> listaMarcas;
+    private List<Grupo> listaGrupos;
+    private int cantidad;
 
     private String valorCodigoBarras;
 
@@ -47,6 +51,8 @@ public class MbVEgreso {
         this.producto = new Producto();
         this.listaVentaDetalle = new ArrayList<>();
         this.listaProducto = getAllProducto();
+        this.listaMarcas = getAllMarcas();
+        this.listaGrupos = getAllGrupos();
     }
 
     private List<Producto> getAllProducto() {
@@ -56,9 +62,49 @@ public class MbVEgreso {
         try {
             this.session = HibernateUtil.getSessionFactory().openSession();
 
-            DaoEgreso daoEgreso=new DaoEgreso();
+            DaoEgreso daoEgreso = new DaoEgreso();
 
             return daoEgreso.getAll(this.session);
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+
+            return null;
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+    private List<Marca> getAllMarcas() {
+        this.session = null;
+        this.transaction = null;
+
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+
+            DaoEgreso daoEgreso = new DaoEgreso();
+
+            return daoEgreso.getAllMarcas(this.session);
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+
+            return null;
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+    private List<Grupo> getAllGrupos() {
+        this.session = null;
+        this.transaction = null;
+
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+
+            DaoEgreso daoEgreso = new DaoEgreso();
+
+            return daoEgreso.getAllGrupos(this.session);
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
 
@@ -73,30 +119,34 @@ public class MbVEgreso {
     public void agregarListaVentaDetalle(Producto productosel) {
         this.session = null;
         this.transaction = null;
-
-        try {
-            if (cantidad < 1) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad debe tener un valor"));
-                return;
-            }
-            if (listaVentaDetalle.contains(productosel)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto ya fue agregado"));
-                return;
-            } else {
-                if ((productosel.getProStockBodega() - cantidad) < 0) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad no debe superar el stock en bodega"));
+        if (valorCodigoBarras == null) {
+            try {
+                if (cantidad < 1) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad debe tener un valor"));
+                    RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
                     return;
                 }
-                productosel.setProStockBodega(productosel.getProStockBodega() - cantidad);
-                this.listaVentaDetalle.add(productosel);
+                if (listaVentaDetalle.contains(productosel)) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto ya fue agregado"));
+                    RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
+                    return;
+                } else {
+                    if ((productosel.getProStockBodega() - cantidad) < 0) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad no debe superar el stock en bodega"));
+                        RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
+                        return;
+                    }
+                    productosel.setProStockBodega(productosel.getProStockBodega() - cantidad);
+                    this.listaVentaDetalle.add(productosel);
+                }
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto agregado"));
+
+                RequestContext.getCurrentInstance().update("frmRealizarVentas:tablaListaProductosVenta");
+                RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
             }
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto agregado"));
-
-            RequestContext.getCurrentInstance().update("frmRealizarVentas:tablaListaProductosVenta");
-            RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
         }
     }
 
@@ -110,6 +160,7 @@ public class MbVEgreso {
             }
             if (cantidad < 1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad debe tener un valor"));
+                RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
                 return;
             }
 
@@ -120,12 +171,20 @@ public class MbVEgreso {
             this.producto = daoEgreso.getByCodigoBarras(this.session, this.valorCodigoBarras);
 
             if (this.producto != null) {
-                if (listaVentaDetalle.contains(producto)) {
+                boolean existe=false;
+                for (Producto next : listaVentaDetalle) {
+                    if(next.getProCodigoBarra().equals(producto.getProCodigoBarra())){
+                        existe=true;
+                    }
+                }
+                if (existe) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto ya fue agregado"));
+                    RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
                     return;
                 } else {
                     if ((producto.getProStockBodega() - cantidad) < 0) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad no debe superar el stock en bodega"));
+                        RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
                         return;
                     }
                     producto.setProStockBodega(producto.getProStockBodega() - cantidad);
@@ -136,7 +195,7 @@ public class MbVEgreso {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Código de barras invalido", "Producto no encontrado"));
             }
 
-            this.valorCodigoBarras = "";
+            this.valorCodigoBarras = null;
 
             RequestContext.getCurrentInstance().update("frmRealizarVentas:tablaListaProductosVenta");
             RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
@@ -144,6 +203,7 @@ public class MbVEgreso {
         } catch (Exception ex) {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+            RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
         } finally {
             if (this.session != null) {
                 this.session.close();
@@ -163,8 +223,6 @@ public class MbVEgreso {
         }
     }
 
-    
-
     public void realizarVenta() {
         this.session = null;
         this.transaction = null;
@@ -175,8 +233,6 @@ public class MbVEgreso {
             DaoEgreso daoEgreso = new DaoEgreso();
 
             this.transaction = this.session.beginTransaction();
-
-            
 
             for (Producto item : this.listaVentaDetalle) {
                 daoEgreso.update(session, item);
@@ -239,4 +295,29 @@ public class MbVEgreso {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    public List<Marca> getListaMarcas() {
+        return listaMarcas;
+    }
+
+    public void setListaMarcas(List<Marca> listaMarcas) {
+        this.listaMarcas = listaMarcas;
+    }
+
+    public List<Grupo> getListaGrupos() {
+        return listaGrupos;
+    }
+
+    public void setListaGrupos(List<Grupo> listaGrupos) {
+        this.listaGrupos = listaGrupos;
+    }
+
+    public List<Producto> getListaProductof() {
+        return listaProductof;
+    }
+
+    public void setListaProductof(List<Producto> listaProductof) {
+        this.listaProductof = listaProductof;
+    }
+    
 }

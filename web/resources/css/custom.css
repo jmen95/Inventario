@@ -184,3 +184,21 @@ and open the template in the editor.
 .ui-selectonemenu{
     max-width: 100%;
 }
+.tabla {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #93c3cd;
+    font-weight: bold;
+    color: #fff;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+    border: 1px solid #999999;
+    background: #1B7BC8;
+    font-weight: bold;
+    color: #fff;
+}
+.mdl-button--raised.mdl-button--colored:hover {
+    background-color: #1B7BC8;
+}

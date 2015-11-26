@@ -5,6 +5,8 @@
  */
 package Interface;
 
+import Pojo.Grupo;
+import Pojo.Marca;
 import Pojo.Producto;
 import java.util.List;
 import org.hibernate.Session;
@@ -18,6 +20,10 @@ public interface InterfaceEgreso {
     public boolean update(Session session, Producto producto) throws Exception;
 
     public List<Producto> getAll(Session session) throws Exception;
+    
+    public List<Marca> getAllMarcas(Session session) throws Exception;
+    
+    public List<Grupo> getAllGrupos(Session session) throws Exception;
 
     public Producto getByCodigoBarras(Session session, String codigo) throws Exception;
 }

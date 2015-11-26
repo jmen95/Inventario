@@ -2,76 +2,109 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Inventario</title>
     </h:head>
     <h:body>
-        <h:form id="frmRealizarVentas">
-            <p:growl id="mensajeGeneral" showDetail="true"/>
-            <h1>Egreso de productos</h1>
-            <hr />
-            <p:panelGrid columns="1">
-                <h:panelGroup>
+        <ui:composition template="../plantilla.xhtml">
+            <ui:define name="title">::Egreso de productos::</ui:define>
+            <ui:define name="content">
+                <br></br>
+                <h:form id="frmRealizarVentas">
+                    <p:growl id="mensajeGeneral" showDetail="true"/>
 
-                    <h:outputLabel value="Candidad a utilizar"></h:outputLabel>
-                    <h:inputText value="#{mbVEgreso.cantidad}"></h:inputText>
+                    <hr />
 
-                    <h:outputLabel value="Agregar por código de barras "></h:outputLabel>                    
-                    <p:inputText id="txtAgregarPorCodigoBarras" value="#{mbVEgreso.valorCodigoBarras}">
-                        <p:ajax event="keyup" listener="#{mbVEgreso.agregarListaVentaDetallePorCodigoBarras()}"/>
-                    </p:inputText>
+                    <div class="agregarProducto mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Seleccione productos a utilizar</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--3-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                        <h:outputLabel for="cantidad" value="Candidad a utilizar" styleClass="mdl-textfield__label"></h:outputLabel>
+                                        <h:inputText id="cantidad" value="#{mbVEgreso.cantidad}" required="true" styleClass="mdl-textfield__input"></h:inputText>
+                                    </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                        <h:outputLabel value="Agregar por código de barras " styleClass="mdl-textfield__label"></h:outputLabel>                    
+                                        <p:inputText id="txtAgregarPorCodigoBarras" value="#{mbVEgreso.valorCodigoBarras}" required="true" styleClass="mdl-textfield__input">
+                                        </p:inputText>
+                                    </div>
+                                </div>
 
-                    <br /><br />
-                    <p:dataTable value="#{mbVEgreso.listaProducto}" var="item" style="font-size: 10px;width: 700px;" scrollable="true" scrollHeight="100">
-                        <p:column headerText="CÓDIGO DE BARRAS">
+
+                                <div class="mdl-cell mdl-cell--2-col">
+                                    <p:commandButton id="buscar" icon="ui-icon-plus" actionListener="#{mbVEgreso.agregarListaVentaDetallePorCodigoBarras()}" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"/>
+                                </div>
+                            </div>
+                            <br /><br />
+                            <p:dataTable widgetVar="tblAllProducts" value="#{mbVEgreso.listaProducto}" var="item" style="font-size: 10px;width: 100%;" scrollable="true" scrollHeight="100" filteredValue="#{mbVEgreso.listaProductof}" emptyMessage="No hay productos encontrados">
+                                <p:column headerText="CÓDIGO DE BARRAS">
+                                    <h:outputText value="#{item.proCodigoBarra}"/>
+                                </p:column>
+                                <p:column headerText="NOMBRE" filterBy="#{item.proNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{item.proNombre}"/>
+                                </p:column>
+                                <p:column headerText="CATEGORÍA" filterBy="#{item.grupo.gruNombre}" filterMatchMode="in">
+                                    <f:facet name="filter">
+                                        <p:selectCheckboxMenu label="Seleccione" onchange="PF('tblAllProducts').filter()">
+                                            <f:selectItems value="#{mbVEgreso.listaGrupos}" var="v" itemLabel="#{v.gruNombre}" itemValue="#{v.gruNombre}"/>
+                                        </p:selectCheckboxMenu>
+                                    </f:facet>
+                                    <h:outputText value="#{item.grupo.gruNombre}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.marca.marNombre}" headerText="MARCA" filterMatchMode="in">
+                                    <f:facet name="filter">
+                                        <p:selectCheckboxMenu label="Seleccione" onchange="PF('tblAllProducts').filter()">
+                                            <f:selectItems value="#{mbVEgreso.listaMarcas}" var="v" itemLabel="#{v.marNombre}" itemValue="#{v.marNombre}"/>
+                                        </p:selectCheckboxMenu>
+                                    </f:facet>
+                                    <h:outputText value="#{item.marca.marNombre}"/>
+                                </p:column>
+                                <p:column headerText="Ubicación" style="text-align: center;">
+                                    <h:outputText value="#{item.proUbicacion}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton value="Agregar" process="@this :frmRealizarVentas:cantidad" update=":frmRealizarVentas:mensajeGeneral" ajax="true" actionListener="#{mbVEgreso.agregarListaVentaDetalle(item)}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                    <hr />
+                    <b>Lista de productos a utilizar</b>
+                    <hr />
+                    <p:dataTable id="tablaListaProductosVenta" value="#{mbVEgreso.listaVentaDetalle}" var="item" style="font-size: 10px;">
+                        <p:column headerText="CÓDIGO DE BARRAS" style="text-align: center;">
                             <h:outputText value="#{item.proCodigoBarra}"/>
                         </p:column>
-                        <p:column headerText="NOMBRE" filterBy="nombre">
+                        <p:column headerText="NOMBRE" style="text-align: left;">
                             <h:outputText value="#{item.proNombre}"/>
-                        </p:column>
-                        <p:column headerText="CATEGORÍA">
-                            <h:outputText value="#{item.grupo.gruDescripcion}"/>
-                        </p:column>
-                        <p:column headerText="MARCA">
-                            <h:outputText value="#{item.marca.marDescripcion}"/>
                         </p:column>
                         <p:column headerText="Ubicación" style="text-align: center;">
                             <h:outputText value="#{item.proUbicacion}"/>
                         </p:column>
-                        <p:column>
-                            <p:commandButton value="Agregar" ajax="true" actionListener="#{mbVEgreso.agregarListaVentaDetalle(item)}"/>
+                        <p:column headerText="Cantidad restante" style="text-align: center;">
+                            <h:outputText value="#{item.proStockBodega}" style="text-align: center;" />                    
+                        </p:column>
+                        <p:column style="text-align: center;">
+                            <p:commandButton value="Retirar de la lista" ajax="true" actionListener="#{mbVEgreso.retirarListaVentaDetalle(item)}"/>
                         </p:column>
                     </p:dataTable>
-                </h:panelGroup>
-            </p:panelGrid>
-            <hr />
-            <b>Lista de productos a vender</b>
-            <hr />
-            <p:dataTable id="tablaListaProductosVenta" value="#{mbVEgreso.listaVentaDetalle}" var="item" style="font-size: 10px;">
-                <p:column headerText="CÓDIGO DE BARRAS" style="text-align: center;">
-                    <h:outputText value="#{item.proCodigoBarra}"/>
-                </p:column>
-                <p:column headerText="NOMBRE" style="text-align: left;">
-                    <h:outputText value="#{item.proNombre}"/>
-                </p:column>
-                <p:column headerText="Ubicación" style="text-align: center;">
-                    <h:outputText value="#{item.proUbicacion}"/>
-                </p:column>
-                <p:column headerText="Cantidad restante" style="text-align: center;">
-                    <p:inputText value="#{item.proStockBodega}" style="text-align: center;" />                    
-                </p:column>
-                <p:column style="text-align: center;">
-                    <p:commandButton value="Retirar de la lista" ajax="true" actionListener="#{mbVEgreso.retirarListaVentaDetalle(item)}"/>
-                </p:column>
-            </p:dataTable>
-            <p:panelGrid id="panelFinalVenta" columns="1" style="text-align: right;width: 100%;">
-                <h:panelGroup>
-                    <p:commandButton value="Registrar" ajax="false" actionListener="#{mbVEgreso.realizarVenta()}"/>
-                </h:panelGroup>
-            </p:panelGrid>
-            
-        </h:form>
+                    <p:panelGrid id="panelFinalVenta" columns="1" style="text-align: right;width: 100%;">
+                        <h:panelGroup>
+                            <p:commandButton value="Registrar" ajax="false" actionListener="#{mbVEgreso.realizarVenta()}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:defaultCommand target="buscar" />
+                </h:form>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
 

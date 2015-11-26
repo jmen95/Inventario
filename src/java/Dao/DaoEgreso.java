@@ -5,6 +5,8 @@
  */
 package Dao;
 
+import Pojo.Grupo;
+import Pojo.Marca;
 import Pojo.Producto;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -43,5 +45,20 @@ public class DaoEgreso implements Interface.InterfaceEgreso{
         Producto producto = (Producto) query.uniqueResult();
         return producto;
     }
-    
+
+    @Override
+    public List<Marca> getAllMarcas(Session session) throws Exception {
+        Criteria criteria=session.createCriteria(Marca.class);
+        criteria.add(Restrictions.eq("marEstado", "AC"));
+        return criteria.list();
+    }
+
+    @Override
+    public List<Grupo> getAllGrupos(Session session) throws Exception {
+        Criteria criteria=session.createCriteria(Grupo.class);
+        criteria.add(Restrictions.eq("gruEstado", "AC"));
+        return criteria.list();
+    }
+
+
 }
