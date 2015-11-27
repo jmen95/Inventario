@@ -75,6 +75,7 @@ public class MbVEgreso {
             }
         }
     }
+
     private List<Marca> getAllMarcas() {
         this.session = null;
         this.transaction = null;
@@ -95,6 +96,7 @@ public class MbVEgreso {
             }
         }
     }
+
     private List<Grupo> getAllGrupos() {
         this.session = null;
         this.transaction = null;
@@ -119,35 +121,40 @@ public class MbVEgreso {
     public void agregarListaVentaDetalle(Producto productosel) {
         this.session = null;
         this.transaction = null;
-        if (valorCodigoBarras == null) {
-            try {
-                if (cantidad < 1) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad debe tener un valor"));
-                    RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
-                    return;
-                }
-                if (listaVentaDetalle.contains(productosel)) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto ya fue agregado"));
-                    RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
-                    return;
-                } else {
-                    if ((productosel.getProStockBodega() - cantidad) < 0) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad no debe superar el stock en bodega"));
-                        RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
-                        return;
-                    }
-                    productosel.setProStockBodega(productosel.getProStockBodega() - cantidad);
-                    this.listaVentaDetalle.add(productosel);
-                }
-
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto agregado"));
-
-                RequestContext.getCurrentInstance().update("frmRealizarVentas:tablaListaProductosVenta");
+        try {
+            if (cantidad < 1) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad debe tener un valor"));
                 RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
-            } catch (Exception ex) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+                return;
             }
+            boolean existe = false;
+            for (Producto next : listaVentaDetalle) {
+                if (next.getProCodigoBarra().equals(producto.getProCodigoBarra())) {
+                    existe = true;
+                }
+            }
+            if (existe) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto ya fue agregado"));
+                RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
+                return;
+            } else {
+                if ((productosel.getProStockBodega() - cantidad) < 0) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La cantidad no debe superar el stock en bodega"));
+                    RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
+                    return;
+                }
+                productosel.setProStockBodega(productosel.getProStockBodega() - cantidad);
+                this.listaVentaDetalle.add(productosel);
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto agregado"));
+
+            RequestContext.getCurrentInstance().update("frmRealizarVentas:tablaListaProductosVenta");
+            RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
         }
+
     }
 
     public void agregarListaVentaDetallePorCodigoBarras() {
@@ -171,10 +178,10 @@ public class MbVEgreso {
             this.producto = daoEgreso.getByCodigoBarras(this.session, this.valorCodigoBarras);
 
             if (this.producto != null) {
-                boolean existe=false;
+                boolean existe = false;
                 for (Producto next : listaVentaDetalle) {
-                    if(next.getProCodigoBarra().equals(producto.getProCodigoBarra())){
-                        existe=true;
+                    if (next.getProCodigoBarra().equals(producto.getProCodigoBarra())) {
+                        existe = true;
                     }
                 }
                 if (existe) {
@@ -319,5 +326,5 @@ public class MbVEgreso {
     public void setListaProductof(List<Producto> listaProductof) {
         this.listaProductof = listaProductof;
     }
-    
+
 }
