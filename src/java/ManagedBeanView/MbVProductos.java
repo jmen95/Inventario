@@ -11,14 +11,21 @@ import Pojo.Grupo;
 import Pojo.Marca;
 import Pojo.Producto;
 import Pojo.Tipodescarga;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -27,25 +34,34 @@ import org.primefaces.context.RequestContext;
 @ManagedBean
 @RequestScoped
 public class MbVProductos {
- private Producto producto;
+
+    private Producto producto;
     private String codMarca;
     private String codGrupo;
     private String codTipoDescarga;
     private List<Marca> listaMarca;
     private List<Grupo> listaGrupo;
     private List<Tipodescarga> listaTipodescarga;
+    private UploadedFile  file;
+    String ruta;
+    String rutaini;
     Session session;
     Transaction transaction;
 
     public MbVProductos() {
         try {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String relativeWebPath = "/resources/imagenes/";
+            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+            ruta = servletContext.getRealPath(relativeWebPath);
+            rutaini=ruta;
             DaoProducto daoProducto = new DaoProducto();
             session = HibernateUtil.getSessionFactory().openSession();
             producto = new Producto();
-            listaGrupo=daoProducto.getGrupos(session);
-            listaMarca=daoProducto.getMarcas(session);
-            listaTipodescarga=daoProducto.getTipodescargas(session);
-        }  catch (Exception ex) {
+            listaGrupo = daoProducto.getGrupos(session);
+            listaMarca = daoProducto.getMarcas(session);
+            listaTipodescarga = daoProducto.getTipodescargas(session);
+        } catch (Exception ex) {
             if (this.transaction != null) {
                 this.transaction.rollback();
             }
@@ -76,9 +92,11 @@ public class MbVProductos {
             marca = daoProducto.getByCodigoMarca(session, Integer.parseInt(codMarca));
             grupo = daoProducto.getByCodigoGrupo(session, Integer.parseInt(codGrupo));
             tipodescarga = daoProducto.getByCodigoDescarga(session, Integer.parseInt(codTipoDescarga));
+            copyFile(file.getFileName(), file.getInputstream());
             producto.setGrupo(grupo);
             producto.setMarca(marca);
             producto.setTipodescarga(tipodescarga);
+            producto.setProImagen(ruta);
             daoProducto.register(session, producto);
             transaction.commit();
             producto = new Producto();
@@ -97,7 +115,7 @@ public class MbVProductos {
             if (session.isOpen()) {
                 session.close();
             }
-
+            ruta=rutaini;
         }
     }
 
@@ -156,6 +174,40 @@ public class MbVProductos {
     public void setListaTipodescarga(List<Tipodescarga> listaTipodescarga) {
         this.listaTipodescarga = listaTipodescarga;
     }
+
+    
+
+    public void copyFile(String fileName, InputStream in) {
+        try {
+
+            // write the inputStream to a FileOutputStream
+            OutputStream out = new FileOutputStream(new File(ruta+"\\" + fileName));
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+
+            in.close();
+            out.flush();
+            out.close();
+            ruta+="\\" + fileName;
+            System.out.println("New file created!");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
     
     
 }

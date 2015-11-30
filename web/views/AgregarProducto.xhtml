@@ -96,7 +96,7 @@
                                     </div>
                                 </div>
                                 <div class="mdl-cell mdl-cell--6-col">
-                                    <p:fileUpload value="#{fileUploadView.file}" mode="simple" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"/>
+                                    <p:fileUpload value="#{mbVProductos.file}" mode="simple" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" update="mensaje" sizeLimit="100000"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
                                 </div>
                                 <div class="mdl-cell mdl-cell--2-col">
                                     <h:outputLabel  value="Estado"/>   <br></br>
