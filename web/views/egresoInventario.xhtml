@@ -67,10 +67,15 @@
                                     </f:facet>
                                     <h:outputText value="#{item.marca.marNombre}"/>
                                 </p:column>
-                                <p:column headerText="Ubicación" style="text-align: center;">
+                                <p:column headerText="UBICACIÓN" style="text-align: center;">
                                     <h:outputText value="#{item.proUbicacion}"/>
                                 </p:column>
-                                <p:column>
+                                <p:column headerText="DETALLE">
+                                    <p:commandButton process="@this" update=":frmRealizarVentas:proDetail" oncomplete="PF('proDialog').show()" icon="ui-icon-search" title="Detalles">
+                                        <f:setPropertyActionListener value="#{mbVEgreso.getPro(item)}" target="#{mbVEgreso.productoSeleccionado}" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column headerText="ACCIÓN">
                                     <p:commandButton value="Agregar" process="@this :frmRealizarVentas:cantidad" update=":frmRealizarVentas:mensajeGeneral" ajax="true" actionListener="#{mbVEgreso.agregarListaVentaDetalle(item)}"/>
                                 </p:column>
                             </p:dataTable>
@@ -102,6 +107,36 @@
                         </h:panelGroup>
                     </p:panelGrid>
                     <p:defaultCommand target="buscar" />
+                    <p:dialog header="Detalles del producto" widgetVar="proDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="proDetail" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="#{not empty mbVEgreso.productoSeleccionado}" columnClasses="label,value">
+                                <f:facet name="header">
+                                    <p:graphicImage value="#{mbVEgreso.productoSeleccionado.proImagen}"/> 
+                                </f:facet>
+
+                                <h:outputText value="Código de barras" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proCodigoBarra}" />
+
+                                <h:outputText value="Nombre" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proNombre}" />
+
+                                <h:outputText value="Fecha de ingreso" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proFechaIngreso}" />
+
+                                <h:outputText value="Fecha de vencimiento" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proFechaVencimiento}"/>
+
+                                <h:outputText value="Lote" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proLote}" />
+
+                                <h:outputText value="Referencia" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proReferencia}" />
+
+                                <h:outputText value="Precio de compra" />
+                                <h:outputText value="$#{mbVEgreso.productoSeleccionado.proValorCompra}" />
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
                 </h:form>
             </ui:define>
         </ui:composition>

@@ -44,6 +44,7 @@ public class MbVEgreso {
     private List<Marca> listaMarcas;
     private List<Grupo> listaGrupos;
     private int cantidad;
+    private Producto productoSeleccionado;
 
     private String valorCodigoBarras;
 
@@ -262,7 +263,10 @@ public class MbVEgreso {
             }
         }
     }
-
+    public Producto getPro(Producto pro){
+        productoSeleccionado=pro;
+        return pro;
+    }
     public Producto getProducto() {
         return producto;
     }
@@ -327,4 +331,12 @@ public class MbVEgreso {
         this.listaProductof = listaProductof;
     }
 
+    public Producto getProductoSeleccionado() {
+        return productoSeleccionado;
+    }
+
+    public void setProductoSeleccionado(Producto productoSeleccionado) {
+        this.productoSeleccionado = productoSeleccionado;
+    }
+    
 }
