@@ -51,7 +51,7 @@ public class MbVProductos {
     public MbVProductos() {
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
-            String relativeWebPath = "/resources/imagenes/";
+            String relativeWebPath = "/resources/imgproductos/";
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
             ruta = servletContext.getRealPath(relativeWebPath);
             rutaini=ruta;

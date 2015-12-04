@@ -111,7 +111,7 @@
                         <p:outputPanel id="proDetail" style="text-align:center;">
                             <p:panelGrid  columns="2" rendered="#{not empty mbVEgreso.productoSeleccionado}" columnClasses="label,value">
                                 <f:facet name="header">
-                                    <p:graphicImage value="#{mbVEgreso.productoSeleccionado.proImagen}"/> 
+                                    <img src="#{mbVEgreso.productoSeleccionado.proImagen}"/> 
                                 </f:facet>
 
                                 <h:outputText value="Código de barras" />
