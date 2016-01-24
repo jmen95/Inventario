@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Inventario</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../plantilla.xhtml">
+            <ui:define name="title">::Ver productos::</ui:define>
+            <ui:define name="content">
+                <br></br>
+                <h:form id="frmVerProductos">
+                    <p:growl id="mensajeGeneral" showDetail="true"/>
+
+
+
+                    <div class="verProducto mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Listado de productos</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+
+                            <p:dataTable id="tblProductos" widgetVar="tblAllProducts" value="#{mbVEgreso.listaProducto}" selectionMode="single" var="item" style="font-size: 10px;width: 100%;" scrollable="true" scrollHeight="400" filteredValue="#{mbVEgreso.listaProductof}" emptyMessage="No hay productos encontrados" selection="#{mbVEgreso.productoSeleccionado}" rowKey="#{item.proCodigoBarra}">
+                                <f:facet name="header">
+                                    <p:commandButton process="tblProductos" value="Detalle" update=":frmVerProductos:proDetail" oncomplete="PF('proDialog').show()" icon="ui-icon-search" title="Detalles">
+                                    </p:commandButton>
+                                    <p:commandButton process="tblProductos" update=":actualizarImagen" oncomplete="PF('proDialogImg').show()"  value="Act. imagen">
+                                    </p:commandButton>
+                                    <p:commandButton process="@this" actionListener="#{mbVEgreso.cargarUsuarioEditar()}" icon="ui-icon-pencil" title="editar">
+                                    </p:commandButton>
+                                    <!--<p:commandButton  update=":actualizarImagen" icon="ui-icon-search" value="Ver" actionListener="" />-->
+                                </f:facet>
+
+                                <p:column headerText="CÓDIGO DE BARRAS">
+                                    <h:outputText value="#{item.proCodigoBarra}"/>
+                                </p:column>
+                                <p:column headerText="NOMBRE" filterBy="#{item.proNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{item.proNombre}"/>
+                                </p:column>
+                                <p:column headerText="CATEGORÍA" filterBy="#{item.grupo.gruNombre}" filterMatchMode="in">
+                                    <f:facet name="filter">
+                                        <p:selectCheckboxMenu label="Seleccione" onchange="PF('tblAllProducts').filter()">
+                                            <f:selectItems value="#{mbVEgreso.listaGrupos}" var="v" itemLabel="#{v.gruNombre}" itemValue="#{v.gruNombre}"/>
+                                        </p:selectCheckboxMenu>
+                                    </f:facet>
+                                    <h:outputText value="#{item.grupo.gruNombre}"/>
+                                </p:column>
+                                <p:column filterBy="#{item.marca.marNombre}" headerText="MARCA" filterMatchMode="in">
+                                    <f:facet name="filter">
+                                        <p:selectCheckboxMenu label="Seleccione" onchange="PF('tblAllProducts').filter()">
+                                            <f:selectItems value="#{mbVEgreso.listaMarcas}" var="v" itemLabel="#{v.marNombre}" itemValue="#{v.marNombre}"/>
+                                        </p:selectCheckboxMenu>
+                                    </f:facet>
+                                    <h:outputText value="#{item.marca.marNombre}"/>
+                                </p:column>
+                                <p:column headerText="UBICACIÓN" style="text-align: center;">
+                                    <h:outputText value="#{item.proUbicacion}"/>
+                                </p:column>
+                                <p:column headerText="ESTADO">
+                                    <h:outputText value="#{item.proEstado=='AC'?'ACTIVO':'INACTIVO'}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                    </div>
+                    <p:dialog header="Detalles del producto" widgetVar="proDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="proDetail" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="#{not empty mbVEgreso.productoSeleccionado}" columnClasses="label,value">
+                                <f:facet name="header">
+                                    <p:graphicImage value="#{FacesContext.getCurrentIntance().getExternalContext()}/resources/imgproductos/#{mbVEgreso.productoSeleccionado.proImagen!=null?mbVEgreso.productoSeleccionado.proImagen:'default.png'}" height="70" cache="false" style="max-width: 100%;"/>
+                                </f:facet>
+
+                                <h:outputText value="Código de barras" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proCodigoBarra}" />
+
+                                <h:outputText value="Nombre" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proNombre}" />
+
+                                <h:outputText value="Fecha de ingreso" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proFechaIngreso}" />
+
+                                <h:outputText value="Fecha de vencimiento" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proFechaVencimiento}"/>
+
+                                <h:outputText value="Lote" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proLote}" />
+
+                                <h:outputText value="Referencia" />
+                                <h:outputText value="#{mbVEgreso.productoSeleccionado.proReferencia}" />
+
+                                <h:outputText value="Precio de compra" />
+                                <h:outputText value="$#{mbVEgreso.productoSeleccionado.proValorCompra}" />
+
+                                <h:outputText value="Última cantidad" />
+                                <h:outputText value="$#{mbVEgreso.productoSeleccionado.proStockMaximo}" />
+
+                                <h:outputText value="Cantidad restante" />
+                                <h:outputText value="$#{mbVEgreso.productoSeleccionado.proStockMaximo}" />
+
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
+                <p:dialog header="Actualizar imagen" widgetVar="proDialogImg" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <h:form id="actualizarImagen" enctype="multipart/form-data">
+                        <h:inputHidden value="#{mbVEgreso.productoSeleccionado.proCodigoBarra}"></h:inputHidden>
+                        <p:fileUpload value="#{mbVEgreso.file}" mode="simple" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" sizeLimit="100000"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"></p:fileUpload>
+                        <p:commandButton value="Actualizar imagen" ajax="false" actionListener="#{mbVEgreso.actualizarImagen()}"></p:commandButton>
+                    </h:form>
+                </p:dialog>
+                <h:form id="frmProducto" style="margin-left: 4px; margin-right: 4px;" onkeypress="return event.keyCode != 13" enctype="multipart/form-data">      
+
+                    <p:dialog header="Actualizar producto" widgetVar="proDialogEdit" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:growl id="mensaje" showDetail="true" sticky="true" /> 
+                        <div class="agregarProducto mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Actualizar Producto</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <div class="mdl-grid">
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Código de barras"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proCodigoBarra}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Nombre"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proNombre}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <h:outputLabel  value="Marca"/>   <br></br>
+                                        <p:selectOneMenu  value="#{mbVEgreso.productoSeleccionado.marca}"   filter="true" filterMatchMode="startsWith">
+                                            <f:selectItems value="#{mbVEgreso.listaMarcas}" var="m" itemLabel="#{m.marNombre}" itemValue="#{m}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Valor compra"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="false" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proValorCompra}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Stock mínimo"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proStockMinimo}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Cantidad"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proStockBodega}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Ubicación"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="false" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proUbicacion}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <h:outputLabel  value="Grupo"/>   <br></br>
+                                        <p:selectOneMenu  value="#{mbVEgreso.productoSeleccionado.grupo}"   filter="true" filterMatchMode="startsWith">
+                                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                            <f:selectItems value="#{mbVProductos.listaGrupo}" var="g" itemLabel="#{g.gruNombre}" itemValue="#{g}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col">
+                                        <h:outputLabel  value="Fecha de vencimiento"/> <br></br>   
+                                        <p:calendar  required="true" value="#{mbVEgreso.productoSeleccionado.proFechaVencimiento}" effect="fold" styleClass="fecha"/>
+
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <h:outputLabel  value="tipo de descarga"/>   <br></br>
+                                        <p:selectOneMenu  value="#{mbVEgreso.productoSeleccionado.tipodescarga}" style="width:125px">
+                                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                            <f:selectItems value="#{mbVProductos.listaTipodescarga}" var="l" itemLabel="#{l.tideNombre}" itemValue="#{l}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Referencia"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proReferencia}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
+                                            <h:outputLabel  value="Lote"  styleClass="mdl-textfield__label"/>   
+                                            <h:inputText   required="true" styleClass="mdl-textfield__input" value="#{mbVEgreso.productoSeleccionado.proLote}"/>
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--2-col">
+                                        <h:outputLabel  value="Estado"/>   <br></br>
+                                        <p:selectOneMenu   value="#{mbVEgreso.productoSeleccionado.proEstado}">
+                                            <f:selectItem itemLabel="Activo" itemValue="AC" />
+                                            <f:selectItem itemLabel="Inactivo" itemValue="IN" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mdl-card__actions mdl-card--border">
+                                <p:commandButton value="ACTUALIZAR"  process="@this" ajax="false" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVEgreso.actualizarProducto()}"/>                        
+                            </div>
+                        </div>
+
+                    </p:dialog> 
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -5,6 +5,7 @@
  */
 package ManagedBeanView;
 
+import Clases.Imagen;
 import Dao.DaoProducto;
 import HibernateUtil.HibernateUtil;
 import Pojo.Grupo;
@@ -92,11 +93,19 @@ public class MbVProductos {
             marca = daoProducto.getByCodigoMarca(session, Integer.parseInt(codMarca));
             grupo = daoProducto.getByCodigoGrupo(session, Integer.parseInt(codGrupo));
             tipodescarga = daoProducto.getByCodigoDescarga(session, Integer.parseInt(codTipoDescarga));
-            copyFile(file.getFileName(), file.getInputstream());
+            
+            if(!(this.file.getFileName().toLowerCase().endsWith(".png")||this.file.getFileName().toLowerCase().endsWith(".gif")||this.file.getFileName().toLowerCase().endsWith(".jpg")||this.file.getFileName().toLowerCase().endsWith(".jpeg"))){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Tipo de imagen no admitida"));
+                return;
+            }
+            
+            if(this.file.getSize()>0)
+            Imagen.copyFile(producto.getProCodigoBarra()+"."+file.getContentType().split("/")[1], file.getInputstream(),"imgproductos");
+            
             producto.setGrupo(grupo);
             producto.setMarca(marca);
             producto.setTipodescarga(tipodescarga);
-            producto.setProImagen(ruta);
+            producto.setProImagen(producto.getProCodigoBarra()+"."+file.getContentType().split("/")[1]);
             daoProducto.register(session, producto);
             transaction.commit();
             producto = new Producto();
@@ -118,7 +127,8 @@ public class MbVProductos {
             ruta=rutaini;
         }
     }
-
+    
+    
     public Producto getProducto() {
         return producto;
     }
@@ -177,28 +187,7 @@ public class MbVProductos {
 
     
 
-    public void copyFile(String fileName, InputStream in) {
-        try {
-
-            // write the inputStream to a FileOutputStream
-            OutputStream out = new FileOutputStream(new File(ruta+"\\" + fileName));
-
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = in.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-
-            in.close();
-            out.flush();
-            out.close();
-            ruta+="\\" + fileName;
-            System.out.println("New file created!");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    
 
     public UploadedFile getFile() {
         return file;

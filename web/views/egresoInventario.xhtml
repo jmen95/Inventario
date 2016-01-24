@@ -27,13 +27,13 @@
                                 <div class="mdl-cell mdl-cell--3-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
                                         <h:outputLabel for="cantidad" value="Candidad a utilizar" styleClass="mdl-textfield__label"></h:outputLabel>
-                                        <h:inputText id="cantidad" value="#{mbVEgreso.cantidad}" required="true" styleClass="mdl-textfield__input"></h:inputText>
+                                        <h:inputText id="cantidad" value="#{mbVEgreso.cantidad}" styleClass="mdl-textfield__input"></h:inputText>
                                     </div>
                                 </div>
                                 <div class="mdl-cell mdl-cell--4-col">
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label imput_login">
                                         <h:outputLabel value="Agregar por código de barras " styleClass="mdl-textfield__label"></h:outputLabel>                    
-                                        <p:inputText id="txtAgregarPorCodigoBarras" value="#{mbVEgreso.valorCodigoBarras}" required="true" styleClass="mdl-textfield__input">
+                                        <p:inputText id="txtAgregarPorCodigoBarras" value="#{mbVEgreso.valorCodigoBarras}" styleClass="mdl-textfield__input">
                                         </p:inputText>
                                     </div>
                                 </div>
@@ -84,26 +84,31 @@
                     <hr />
                     <b>Lista de productos a utilizar</b>
                     <hr />
-                    <p:dataTable id="tablaListaProductosVenta" value="#{mbVEgreso.listaVentaDetalle}" var="item" style="font-size: 10px;">
+                    <p:dataTable id="tablaListaProductosVenta" value="#{mbVEgreso.listaVentaDetalle}" var="item" editable="true" editMode="cell" style="font-size: 10px;">
+                        <p:ajax event="cellEdit" listener="#{mbVEgreso.validarCantidad}"/>
+
                         <p:column headerText="CÓDIGO DE BARRAS" style="text-align: center;">
                             <h:outputText value="#{item.proCodigoBarra}"/>
                         </p:column>
                         <p:column headerText="NOMBRE" style="text-align: left;">
                             <h:outputText value="#{item.proNombre}"/>
                         </p:column>
-                        <p:column headerText="Ubicación" style="text-align: center;">
+                        <p:column headerText="UBICACIÓN" style="text-align: center;">
                             <h:outputText value="#{item.proUbicacion}"/>
                         </p:column>
-                        <p:column headerText="Cantidad restante" style="text-align: center;">
-                            <h:outputText value="#{item.proStockBodega}" style="text-align: center;" />                    
+                        <p:column headerText="CANTIDAD">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{item.proStockMaximo}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{item.proStockMaximo}" style="width:100%" label="CANTIDAD"/></f:facet>
+                            </p:cellEditor>
                         </p:column>
                         <p:column style="text-align: center;">
-                            <p:commandButton value="Retirar de la lista" ajax="true" actionListener="#{mbVEgreso.retirarListaVentaDetalle(item)}"/>
+                            <p:commandButton value="Retirar de la lista" ajax="true" process="@this" actionListener="#{mbVEgreso.retirarListaVentaDetalle(item)}"/>
                         </p:column>
                     </p:dataTable>
                     <p:panelGrid id="panelFinalVenta" columns="1" style="text-align: right;width: 100%;">
                         <h:panelGroup>
-                            <p:commandButton value="Registrar" ajax="false" actionListener="#{mbVEgreso.realizarVenta()}"/>
+                            <p:commandButton value="Registrar" ajax="false" process="@none" actionListener="#{mbVEgreso.realizarVenta()}"/>
                         </h:panelGroup>
                     </p:panelGrid>
                     <p:defaultCommand target="buscar" />
@@ -111,7 +116,7 @@
                         <p:outputPanel id="proDetail" style="text-align:center;">
                             <p:panelGrid  columns="2" rendered="#{not empty mbVEgreso.productoSeleccionado}" columnClasses="label,value">
                                 <f:facet name="header">
-                                    <img src="#{mbVEgreso.productoSeleccionado.proImagen}"/> 
+                                    <p:graphicImage value="#{FacesContext.getCurrentIntance().getExternalContext()}/resources/imgproductos/#{mbVEgreso.productoSeleccionado.proImagen!=null?mbVEgreso.productoSeleccionado.proImagen:'default.png'}" height="50" cache="false" style="max-width: 100%;"/>
                                 </f:facet>
 
                                 <h:outputText value="Código de barras" />

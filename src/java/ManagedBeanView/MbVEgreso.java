@@ -5,6 +5,7 @@
  */
 package ManagedBeanView;
 
+import Clases.Imagen;
 import Dao.DaoEgreso;
 import HibernateUtil.HibernateUtil;
 import Pojo.Grupo;
@@ -18,7 +19,12 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.primefaces.component.api.UIColumn;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -45,6 +51,8 @@ public class MbVEgreso {
     private List<Grupo> listaGrupos;
     private int cantidad;
     private Producto productoSeleccionado;
+    private Producto productoSeleccionado2;
+    private UploadedFile file;
 
     private String valorCodigoBarras;
 
@@ -54,6 +62,7 @@ public class MbVEgreso {
         this.listaProducto = getAllProducto();
         this.listaMarcas = getAllMarcas();
         this.listaGrupos = getAllGrupos();
+        this.cantidad = 1;
     }
 
     private List<Producto> getAllProducto() {
@@ -130,7 +139,7 @@ public class MbVEgreso {
             }
             boolean existe = false;
             for (Producto next : listaVentaDetalle) {
-                if (next.getProCodigoBarra().equals(producto.getProCodigoBarra())) {
+                if (next.getProCodigoBarra().equals(productosel.getProCodigoBarra())) {
                     existe = true;
                 }
             }
@@ -145,6 +154,7 @@ public class MbVEgreso {
                     return;
                 }
                 productosel.setProStockBodega(productosel.getProStockBodega() - cantidad);
+                productosel.setProStockMaximo(cantidad);
                 this.listaVentaDetalle.add(productosel);
             }
 
@@ -196,6 +206,7 @@ public class MbVEgreso {
                         return;
                     }
                     producto.setProStockBodega(producto.getProStockBodega() - cantidad);
+                    producto.setProStockMaximo(cantidad);
                     this.listaVentaDetalle.add(producto);
                 }
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto agregado"));
@@ -222,7 +233,7 @@ public class MbVEgreso {
     public void retirarListaVentaDetalle(Producto productosel) {
         try {
             this.listaVentaDetalle.remove(productosel);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Correcto", "Producto retirado de la lista de venta"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto retirado de la lista de venta"));
 
             RequestContext.getCurrentInstance().update("frmRealizarVentas:tablaListaProductosVenta");
             RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
@@ -263,10 +274,120 @@ public class MbVEgreso {
             }
         }
     }
-    public Producto getPro(Producto pro){
-        productoSeleccionado=pro;
+
+    public void actualizarImagen() {
+        this.session = null;
+        this.transaction = null;
+
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+
+            DaoEgreso daoEgreso = new DaoEgreso();
+
+            this.transaction = this.session.beginTransaction();
+
+            productoSeleccionado.setProImagen(productoSeleccionado.getProCodigoBarra() + "." + file.getContentType().split("/")[1]);
+            daoEgreso.update(session, productoSeleccionado);
+            if (!(this.file.getFileName().toLowerCase().endsWith(".png") || this.file.getFileName().toLowerCase().endsWith(".gif") || this.file.getFileName().toLowerCase().endsWith(".jpg") || this.file.getFileName().toLowerCase().endsWith(".jpeg"))) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error:", "Tipo de imagen no admitida"));
+                return;
+            }
+
+            if (this.file.getSize() > 0) {
+                Imagen.copyFile(productoSeleccionado.getProCodigoBarra() + "." + file.getContentType().split("/")[1], file.getInputstream(), "imgproductos");
+            }
+
+            this.transaction.commit();
+
+            this.listaVentaDetalle = new ArrayList<>();
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Descargue realizado correctamente"));
+        } catch (Exception ex) {
+            if (this.transaction != null) {
+                transaction.rollback();
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+
+    public void validarCantidad(CellEditEvent event) {
+        try {
+            Object oldValue = event.getOldValue();
+            Object newValue = event.getNewValue();
+            productoSeleccionado2 = listaVentaDetalle.get(event.getRowIndex());
+            if (productoSeleccionado2.getProStockBodega() - (Integer) newValue < 0) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "La cantidad no debe superar el stock en bodega"));
+                listaVentaDetalle.get(event.getRowIndex()).setProStockMaximo((Integer) oldValue);
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Cantidad actualizada"));
+                listaVentaDetalle.get(event.getRowIndex()).setProStockBodega(listaVentaDetalle.get(event.getRowIndex()).getProStockBodega() - (Integer) newValue + (Integer) oldValue);
+            }
+            RequestContext.getCurrentInstance().update("frmRealizarVentas:mensajeGeneral");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+        }
+    }
+
+    public void actualizarProducto() {
+        this.session = null;
+        this.transaction = null;
+
+        try {
+            this.session = HibernateUtil.getSessionFactory().openSession();
+
+            DaoEgreso daoEgreso = new DaoEgreso();
+
+            this.transaction = this.session.beginTransaction();
+
+            Producto productoEditado = productoSeleccionado;
+            daoEgreso.update(session, productoEditado);
+
+            this.transaction.commit();
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto editado correctamente"));
+        } catch (Exception ex) {
+            if (this.transaction != null) {
+                transaction.rollback();
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", ex.getMessage()));
+        } finally {
+            if (this.session != null) {
+                this.session.close();
+            }
+        }
+    }
+    
+     public void cargarUsuarioEditar()
+    {
+        
+        
+        try
+        {
+            
+            
+            RequestContext.getCurrentInstance().update("frmProducto");
+            RequestContext.getCurrentInstance().execute("PF('proDialogEdit').show()");
+            
+         
+        }
+        catch(Exception ex)
+        {
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador "+ex.getMessage()));
+        }
+    }
+
+    public Producto getPro(Producto pro) {
+        productoSeleccionado = pro;
         return pro;
     }
+
     public Producto getProducto() {
         return producto;
     }
@@ -338,5 +459,13 @@ public class MbVEgreso {
     public void setProductoSeleccionado(Producto productoSeleccionado) {
         this.productoSeleccionado = productoSeleccionado;
     }
-    
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
 }
