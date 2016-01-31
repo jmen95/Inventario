@@ -7,23 +7,25 @@ package ManagedBeanView;
 
 import Clases.Imagen;
 import Dao.DaoEgreso;
+import Dao.DaoProducto;
 import HibernateUtil.HibernateUtil;
 import Pojo.Grupo;
 import Pojo.Marca;
 import Pojo.Producto;
+import Pojo.Tipodescarga;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.primefaces.component.api.UIColumn;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -32,7 +34,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @ViewScoped
-public class MbVEgreso {
+public class MbVEgreso implements Serializable{
 
     /**
      * Creates a new instance of MbVEgreso
@@ -53,16 +55,25 @@ public class MbVEgreso {
     private Producto productoSeleccionado;
     private Producto productoSeleccionado2;
     private UploadedFile file;
+    private List<Tipodescarga> listaTipodescarga;
 
     private String valorCodigoBarras;
 
     public MbVEgreso() {
-        this.producto = new Producto();
-        this.listaVentaDetalle = new ArrayList<>();
-        this.listaProducto = getAllProducto();
-        this.listaMarcas = getAllMarcas();
-        this.listaGrupos = getAllGrupos();
-        this.cantidad = 1;
+        try {
+            this.producto = new Producto();
+            this.listaVentaDetalle = new ArrayList<>();
+            this.productoSeleccionado = new Producto();
+            this.listaProducto = getAllProducto();
+            this.listaMarcas = getAllMarcas();
+            this.listaGrupos = getAllGrupos();
+            DaoProducto daoProducto = new DaoProducto();
+            session = HibernateUtil.getSessionFactory().openSession();
+            listaTipodescarga = daoProducto.getTipodescargas(session);
+            this.cantidad = 1;
+        } catch (Exception ex) {
+            Logger.getLogger(MbVEgreso.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private List<Producto> getAllProducto() {
@@ -362,24 +373,17 @@ public class MbVEgreso {
             }
         }
     }
-    
-     public void cargarUsuarioEditar()
-    {
-        
-        
-        try
-        {
-            
-            
+
+    public void cargarUsuarioEditar() {
+
+        try {
+
             RequestContext.getCurrentInstance().update("frmProducto");
             RequestContext.getCurrentInstance().execute("PF('proDialogEdit').show()");
-            
-         
-        }
-        catch(Exception ex)
-        {
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador "+ex.getMessage()));
+
+        } catch (Exception ex) {
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error fatal:", "Por favor contacte con su administrador " + ex.getMessage()));
         }
     }
 
@@ -466,6 +470,14 @@ public class MbVEgreso {
 
     public void setFile(UploadedFile file) {
         this.file = file;
+    }
+
+    public List<Tipodescarga> getListaTipodescarga() {
+        return listaTipodescarga;
+    }
+
+    public void setListaTipodescarga(List<Tipodescarga> listaTipodescarga) {
+        this.listaTipodescarga = listaTipodescarga;
     }
 
 }

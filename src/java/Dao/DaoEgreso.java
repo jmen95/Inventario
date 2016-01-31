@@ -32,8 +32,9 @@ public class DaoEgreso implements Interface.InterfaceEgreso{
         Criteria criteria=session.createCriteria(Producto.class)
         .createAlias("grupo","g")
         .createAlias("marca","m")
+        .createAlias("tipodescarga","t")
         .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-        criteria.add(Restrictions.eq("proEstado", "AC"));
+//        criteria.add(Restrictions.eq("proEstado", "AC"));
         return criteria.list();
     }
 

@@ -8,13 +8,13 @@
             <column name="proCodigoBarra" length="100" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="grupo" class="Pojo.Grupo" fetch="select">
+        <many-to-one name="grupo" class="Pojo.Grupo" fetch="join">
             <column name="proGruCodigo" />
         </many-to-one>
-        <many-to-one name="marca" class="Pojo.Marca" fetch="select">
+        <many-to-one name="marca" class="Pojo.Marca" fetch="join">
             <column name="proMarCodigo" />
         </many-to-one>
-        <many-to-one name="tipodescarga" class="Pojo.Tipodescarga" fetch="select">
+        <many-to-one name="tipodescarga" class="Pojo.Tipodescarga" fetch="join">
             <column name="proTipoDescarga" />
         </many-to-one>
         <property name="proNombre" type="string">
