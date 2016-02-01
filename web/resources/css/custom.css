@@ -2,8 +2,8 @@
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
-*/
-/* 
+
+ 
     Created on : 25/10/2015, 12:40:31 PM
     Author     : J-MeN
 */
@@ -11,10 +11,8 @@ and open the template in the editor.
 #fondo{
     width: 1px;
     height: 1px;
-    /*background:rgba(0,0,0,0.8);*/
     position: fixed;
     text-align: center;
-    /*display: none;*/
     top:50%;
     left:50%;
     z-index: 99;
@@ -49,11 +47,10 @@ and open the template in the editor.
 }
 .crearusuario > .mdl-card__title {
     color: #fff;
-    /*height: 76px;*/
     background: #2196F3;
 }
 .crearusuario > .mdl-card__supporting-text {
-    /*height: 60px;*/
+    height: 60px;
 }   
 .tabla{
     box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
@@ -68,11 +65,11 @@ and open the template in the editor.
         url('../imagenes/icono.png') bottom right 15% no-repeat #46B6AC;
 }
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-    /*border: 0px solid #7096ab;*/
+    border: 0px solid #7096ab;
     background: #1B7BC8;
-    /*background: #1B7BC8 linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0));*/
-    /*background: #1B7BC8 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.6)), to(rgba(255,255,255,0)));*/
-    /*background: #1B7BC8 -moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0));*/
+    background: #1B7BC8 linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0));
+    background: #1B7BC8 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.6)), to(rgba(255,255,255,0)));
+    background: #1B7BC8 -moz-linear-gradient(top, rgba(255,255,255,0.6), rgba(255,255,255,0));
     font-weight: bold;
     color: #fff;
 
@@ -82,7 +79,6 @@ and open the template in the editor.
     background: #2196F3;
     font-weight: bold;
     color: #fff;
-    /* height: 100%; */
     text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
 }
 .ui-widget-content {
@@ -155,7 +151,7 @@ and open the template in the editor.
     width: 950px;
     max-width: 98%;
     margin: 0 auto;
-    z-index: 1010 !important;
+    /* z-index: 1010 !important; */
 }
 .agregarProducto>.mdl-textfield__input{
     z-index: 10100 !important;
@@ -216,4 +212,8 @@ and open the template in the editor.
 }
 .verProducto.mdl-card mdl-shadow--2dp{
     width: 900px !important;
+}
+.mdl-layout__drawer {
+    position: fixed;
+    z-index: 999;
 }

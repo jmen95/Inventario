@@ -17,7 +17,7 @@
         <property name="marEstado" type="string">
             <column name="marEstado" length="2" />
         </property>
-        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
+        <set name="productos" table="producto" inverse="true" fetch="select">
             <key>
                 <column name="proMarCodigo" />
             </key>
