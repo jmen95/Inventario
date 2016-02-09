@@ -187,3 +187,9 @@ _:-ms-input-placeholder, :root .demo-graph {
   box-sizing: border-box;
   align-items: center;
 }
+.icon-color{
+     color: #2196F3;   
+}
+.mdl-badge[data-badge]:after {
+    background: #d32f2f !important;
+}

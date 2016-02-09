@@ -109,7 +109,7 @@
                     <h:form id="actualizarImagen" enctype="multipart/form-data">
                         <h:inputHidden value="#{mbVEgreso.productoSeleccionado.proCodigoBarra}"></h:inputHidden>
                         <p:fileUpload value="#{mbVEgreso.file}" mode="simple" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" sizeLimit="100000"  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"></p:fileUpload>
-                        <p:commandButton value="Actualizar imagen" ajax="false" actionListener="#{mbVEgreso.actualizarImagen()}"></p:commandButton>
+                        <p:commandButton value="Actualizar imagen" ajax="false" update=":frmVerProductos" actionListener="#{mbVEgreso.actualizarImagen()}" oncomplete="PF('proDialogImg').hide()"></p:commandButton>
                     </h:form>
                 </p:dialog>
 
@@ -137,7 +137,8 @@
                                     </div>
                                     <div class="mdl-cell mdl-cell--2-col">
                                         <h:outputLabel  value="Marca"/>   <br></br>
-                                        <p:selectOneMenu  value="#{mbVEgreso.productoSeleccionado.marca==null?'':mbVEgreso.productoSeleccionado.marca.marCodigo}"   filter="true" filterMatchMode="startsWith">
+                                        <p:selectOneMenu id="txtmarca" value="#{mbVEgreso.productoSeleccionado.marca.marCodigo}"   filter="true" filterMatchMode="startsWith">
+                                            <f:selectItem itemLabel="Seleccione" itemValue="" />
                                             <f:selectItems value="#{mbVEgreso.listaMarcas}" var="m" itemLabel="#{m.marNombre}" itemValue="#{m.marCodigo}" />
                                         </p:selectOneMenu>
                                     </div>
@@ -204,7 +205,7 @@
                                 </div>
                             </div>
                             <div class="mdl-card__actions mdl-card--border">
-                                <p:commandButton value="ACTUALIZAR"  process="@this" ajax="false" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVEgreso.actualizarProducto()}"/>                        
+                                <p:commandButton value="ACTUALIZAR"  update=":frmVerProductos" icon="ui-icon-disk" styleClass="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" style="margin-left: 16px;" actionListener="#{mbVEgreso.actualizarProducto()}" oncomplete="PF('proDialogEdit').hide()"/>
                             </div>
                         </div>
                     </h:form>

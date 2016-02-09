@@ -20,5 +20,8 @@
         <property name="movCantidad" type="string">
             <column name="movCantidad" length="20" />
         </property>
+        <property name="movFecha" type="date">
+            <column name="movFecha" length="10" />
+        </property>
     </class>
 </hibernate-mapping>

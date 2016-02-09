@@ -1,6 +1,9 @@
 package Pojo;
 // Generated 21/11/2015 08:46:55 PM by Hibernate Tools 4.3.1
 
+import java.util.Date;
+
+
 
 
 /**
@@ -14,6 +17,7 @@ public class Movimientos  implements java.io.Serializable {
      private Users users;
      private String movAccion;
      private String movCantidad;
+     private Date movFecha;
 
     public Movimientos() {
     }
@@ -22,12 +26,13 @@ public class Movimientos  implements java.io.Serializable {
     public Movimientos(int movCodigo) {
         this.movCodigo = movCodigo;
     }
-    public Movimientos(int movCodigo, Producto producto, Users users, String movAccion, String movCantidad) {
+    public Movimientos(int movCodigo, Producto producto, Users users, String movAccion, String movCantidad, Date movFecha) {
        this.movCodigo = movCodigo;
        this.producto = producto;
        this.users = users;
        this.movAccion = movAccion;
        this.movCantidad = movCantidad;
+       this.movFecha = movFecha;
     }
    
     public int getMovCodigo() {
@@ -64,6 +69,14 @@ public class Movimientos  implements java.io.Serializable {
     
     public void setMovCantidad(String movCantidad) {
         this.movCantidad = movCantidad;
+    }
+
+    public Date getMovFecha() {
+        return movFecha;
+    }
+
+    public void setMovFecha(Date movFecha) {
+        this.movFecha = movFecha;
     }
 
 

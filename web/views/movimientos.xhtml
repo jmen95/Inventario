@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Inventario</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../plantilla.xhtml">
+            <ui:define name="title">::Movimientos::</ui:define>
+            <ui:define name="content">
+                <br></br>
+                <h:form id="frmMovimientos">
+                    <p:growl id="mensajeGeneral" showDetail="true"/>
+
+
+
+                    <div class="verProducto mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Listado de movimientos</h2>
+                        </div>
+                        <div class="mdl-card__supporting-text">
+
+                            <p:dataTable id="tblMovimientos" widgetVar="wvMovimientos" value="#{mbVMovimientos.listMovimientos}" filteredValue="#{mbVMovimientos.listMovimientosf}" var="item" style="font-size: 10px;width: 100%;" scrollable="true" scrollHeight="400" emptyMessage="No hay movimientos encontrados" rowKey="#{item.movCodigo}">
+
+
+                                <p:column headerText="CÓDIGO DE BARRAS">
+                                    <h:outputText value="#{item.producto.proCodigoBarra}"/>
+                                </p:column>
+                                <p:column headerText="NOMBRE DEL PRODUCTO" filterBy="#{item.producto.proNombre}" filterMatchMode="contains">
+                                    <h:outputText value="#{item.producto.proNombre}"/>
+                                </p:column>
+                                <p:column headerText="ACCIÓN" filterBy="#{item.movAccion}" filterMatchMode="in">
+                                    <f:facet name="filter">
+                                        <p:selectCheckboxMenu label="Seleccione" onchange="PF('wvMovimientos').filter()">
+                                            <f:selectItems value="#{mbVMovimientos.listAcciones}"/>
+                                        </p:selectCheckboxMenu>
+                                    </f:facet>
+                                    <h:outputText value="#{item.movAccion}"/>
+                                </p:column>
+                                <p:column headerText="CANTIDAD" filterBy="#{item.movCantidad}" filterMatchMode="contains">
+                                    <f:facet name="filter">
+                                        <p:spinner onchange="PF('wvMovimientos').filter()" styleClass="year-spinner">
+                                            <f:converter converterId="javax.faces.Integer" />
+                                        </p:spinner>
+                                    </f:facet>
+                                    <h:outputText value="#{item.movCantidad}"/>
+                                </p:column>
+                                <p:column headerText="USUARIO" filterBy="#{item.users.username}" filterMatchMode="contains">
+                                    <h:outputText value="#{item.users.username}"/>
+                                </p:column>
+                                <p:column headerText="FECHA" filterBy="#{item.movFecha}" filterMatchMode="contains">
+                                    <h:outputText value="#{item.movFecha}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -30,9 +30,9 @@ public class DaoEgreso implements Interface.InterfaceEgreso{
     @Override
     public List<Producto> getAll(Session session) throws Exception {
         Criteria criteria=session.createCriteria(Producto.class)
-        .createAlias("grupo","g")
-        .createAlias("marca","m")
-        .createAlias("tipodescarga","t")
+        .createAlias("grupo","g",CriteriaSpecification.LEFT_JOIN)
+        .createAlias("marca","m",CriteriaSpecification.LEFT_JOIN)
+        .createAlias("tipodescarga","t",CriteriaSpecification.LEFT_JOIN)
         .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 //        criteria.add(Restrictions.eq("proEstado", "AC"));
         return criteria.list();
@@ -58,6 +58,17 @@ public class DaoEgreso implements Interface.InterfaceEgreso{
     public List<Grupo> getAllGrupos(Session session) throws Exception {
         Criteria criteria=session.createCriteria(Grupo.class);
         criteria.add(Restrictions.eq("gruEstado", "AC"));
+        return criteria.list();
+    }
+
+    @Override
+    public List<Producto> getActives(Session session) throws Exception {
+        Criteria criteria=session.createCriteria(Producto.class)
+        .createAlias("grupo","g",CriteriaSpecification.LEFT_JOIN)
+        .createAlias("marca","m",CriteriaSpecification.LEFT_JOIN)
+        .createAlias("tipodescarga","t",CriteriaSpecification.LEFT_JOIN)
+        .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        criteria.add(Restrictions.eq("proEstado", "AC"));
         return criteria.list();
     }
 

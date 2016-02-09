@@ -310,9 +310,7 @@ public class MbVEgreso implements Serializable{
 
             this.transaction.commit();
 
-            this.listaVentaDetalle = new ArrayList<>();
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Descargue realizado correctamente"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Imagen actualizada con exito"));
         } catch (Exception ex) {
             if (this.transaction != null) {
                 transaction.rollback();
@@ -359,7 +357,8 @@ public class MbVEgreso implements Serializable{
             daoEgreso.update(session, productoEditado);
 
             this.transaction.commit();
-
+            
+//            RequestContext.getCurrentInstance().update("frmVerProductos:tblProductos");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Correcto", "Producto editado correctamente"));
         } catch (Exception ex) {
             if (this.transaction != null) {
@@ -371,6 +370,7 @@ public class MbVEgreso implements Serializable{
             if (this.session != null) {
                 this.session.close();
             }
+            this.listaProducto = getAllProducto();
         }
     }
 
@@ -457,6 +457,18 @@ public class MbVEgreso implements Serializable{
     }
 
     public Producto getProductoSeleccionado() {
+        if(productoSeleccionado.getGrupo()==null){
+            Grupo grupo=new Grupo();
+            productoSeleccionado.setGrupo(grupo);
+        }
+        if(productoSeleccionado.getMarca()==null){
+            Marca marca=new Marca();
+            productoSeleccionado.setMarca(marca);
+        }
+        if(productoSeleccionado.getTipodescarga()==null){
+            Tipodescarga tipodescarga=new Tipodescarga();
+            productoSeleccionado.setTipodescarga(tipodescarga);
+        }
         return productoSeleccionado;
     }
 

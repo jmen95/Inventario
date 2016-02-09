@@ -12,15 +12,10 @@ import Pojo.Grupo;
 import Pojo.Marca;
 import Pojo.Producto;
 import Pojo.Tipodescarga;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import org.hibernate.Session;
@@ -33,7 +28,7 @@ import org.primefaces.model.UploadedFile;
  * @author J-MeN
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class MbVProductos {
 
     private Producto producto;

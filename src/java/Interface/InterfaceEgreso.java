@@ -26,4 +26,6 @@ public interface InterfaceEgreso {
     public List<Grupo> getAllGrupos(Session session) throws Exception;
 
     public Producto getByCodigoBarras(Session session, String codigo) throws Exception;
+    
+    public List<Producto> getActives(Session session) throws Exception;
 }
